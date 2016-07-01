@@ -3,6 +3,6 @@
  */
 
 export interface Point{
-    x:number;
+    x:number;//配列番号0から考えるようにしようね
     y:number;
 }
