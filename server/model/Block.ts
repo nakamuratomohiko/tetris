@@ -5,6 +5,7 @@
  * 図形クラス
  */
 import {Point} from "./Point";
+import {BlockType} from "./BlockType";
 
 export abstract class Block{
     private _form : number[][];//図形
@@ -12,12 +13,19 @@ export abstract class Block{
     private _point:Point;//最終地点の支点の位置
     private _date:Date;//着地した時の時間
     private _angle:number;//0:初期,1:右に90度,2:180度,3:左に90度
+    private _name:BlockType;
 
     constructor(){
         this._form = this.createForm();
         this._fulcrum = this.createFulcrum();
+        this._name = this.setBlockType();
     }
 
+    /**
+     * BlockTypeをセットする
+     */
+    protected abstract setBlockType():BlockType;
+    
     /**
      * 図形の形をセットする
      */
