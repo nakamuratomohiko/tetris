@@ -14,14 +14,14 @@ export abstract class Block{
     private _angle:number;//0:初期,1:右に90度,2:180度,3:左に90度
 
     constructor(){
-        this._form = this.setForm();
-        this._fulcrum = this.setFulcrum();
+        this._form = this.createForm();
+        this._fulcrum = this.createFulcrum();
     }
 
     /**
      * 図形の形をセットする
      */
-    protected abstract setForm();
+    protected abstract createForm():number[][];
 
     /**
      * 形を取得する
@@ -32,7 +32,7 @@ export abstract class Block{
     /**
      * 支点をセットする
      */
-    protected abstract setFulcrum():Point;
+    protected abstract createFulcrum():Point;
 
     /**
      * 支点をしゅとくする　
