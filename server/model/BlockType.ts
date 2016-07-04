@@ -6,7 +6,8 @@ export enum BlockType{
     
     Square,
     Rectangle,
-    LBlock
+    LBlock,
+    ReverseLBlock
 
 
 }
