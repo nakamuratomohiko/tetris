@@ -8,9 +8,8 @@ import {Point} from "./Point";
 import {BlockType} from "./BlockType";
 
 export abstract class Block{
-    private _form : number[][];//図形
-    private _fulcrum:Point;//支点の位置
-    private _point:Point;//最終地点の支点の位置
+    private _form : Point[][];//図形
+    private _point:Point;//支点の位置
     private _date:Date;//着地した時の時間
     private _angle:number;//0:初期,1:右に90度,2:180度,3:左に90度
     private _name:BlockType;
@@ -18,7 +17,6 @@ export abstract class Block{
 
     constructor(){
         this._form = this.createForm();
-        this._fulcrum = this.createFulcrum();
         this._name = this.setBlockType();
         this._color = this.createColor();
     }
@@ -29,6 +27,11 @@ export abstract class Block{
     protected abstract createColor():string;
 
     /**
+     * カラーを取得
+     */
+    public get color():string{return this._color};
+
+    /**
      * BlockTypeをセットする
      */
     protected abstract setBlockType():BlockType;
@@ -36,24 +39,15 @@ export abstract class Block{
     /**
      * 図形の形をセットする
      */
-    protected abstract createForm():number[][];
+    protected abstract createForm():Point[][];
 
     /**
      * 形を取得する
      * @returns {number[][]}
      */
-    public get form():number[][]{return this._form;}
+    public get form():Point[][]{return this._form;}
 
-    /**
-     * 支点をセットする
-     */
-    protected abstract createFulcrum():Point;
 
-    /**
-     * 支点をしゅとくする　
-     * @returns {Point}
-     */
-    public get fulcrum():Point{return this._fulcrum;}
 
     /**
      * 支点の最終地点をセットする
