@@ -16,13 +16,11 @@ export class Square extends Block{
      * 四角形の図形セット
      * @returns {number[][]}
      */
-    protected createForm():number[][]{
-        return [[1,1],[1,1]];
+    protected createForm():Point[][]{
+        return [[{x:0,y:1},{x:1,y:1},{x:1,y:0}]];
     }
     
-    protected createFulcrum():Point{
-        return {x:1,y:1};
-    }
+
 
     /**
      * 四角形のBlockTypeをセット
