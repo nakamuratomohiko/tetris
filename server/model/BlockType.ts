@@ -5,7 +5,8 @@
 export enum BlockType{
     
     Square,
-    Rectangle
+    Rectangle,
+    LBlock
 
 
 }
