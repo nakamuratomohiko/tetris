@@ -1,0 +1,6 @@
+{
+  "host": "localhost",
+  "user": "tetris",
+  "password": "tetris",
+  "database": "tetris"
+}
