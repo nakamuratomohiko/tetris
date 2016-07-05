@@ -23,7 +23,7 @@ export class DBStore {
      * @param password {string}
      * @returns {Promise} resolve成功:true　reject失敗:false
      */
-    public insert(userName:string,password:string) {
+    public userInsert(userName:string,password:string) {
         const connection = this.connection;
         return new Promise(function (resolve, reject)  {
             connection.connect();
@@ -51,20 +51,20 @@ export class DBStore {
      * @param user
      * @returns {Promise} 
      */
-    public update(user:User){
+    public scoreUpdate(user:User){
         const connection = this.connection;
 
         return new Promise(function (resolve,reject){
             connection.connect();
 
-            connection.query("UPDATE rank, user SET rank.score = "+user.maxScore+" WHERE user.name = '"+ user.name +"' AND score < "+user.maxScore+" AND user.id = rank.id", function (err, rows, fields) {
+            connection.query("UPDATE user SET score = "+user.maxScore+" WHERE name = '"+ user.name +"' AND score < "+user.maxScore+"", function (err, rows, fields) {
                 if (err) throw err;
 
                 console.log('The solution is: ', rows);
                 if(rows.changedRows == 0){
-                    reject(false);
+                    reject();
                 }else{
-                    resolve(true);
+                    resolve();
                 }
 
 
@@ -76,6 +76,10 @@ export class DBStore {
 
 
     }
+
+
+
+
 
     /**
      * 名前からUserオブジェクトを取得
