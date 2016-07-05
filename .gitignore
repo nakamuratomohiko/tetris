@@ -40,3 +40,4 @@ UML
 typings
 *.js
 *.map
+test.*
