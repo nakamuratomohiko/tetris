@@ -19,6 +19,7 @@ export abstract class Block{
         this._form = this.createForm();
         this._blockType = this.setBlockType();
         this._color = this.createColor();
+        this._point = {x:0,y:0};
     }
 
     /**
