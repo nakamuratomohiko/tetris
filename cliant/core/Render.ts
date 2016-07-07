@@ -13,8 +13,8 @@ export class Render{
     private h:number = 800;//キャンパスのサイズ
     private cols:number = 10;//横分割個数
     private rows:number = 20;//縦分割個数
-    private BlockW = this.w / this.cols;//横を１０個のブロックに分ける
-    private BlockH = this.h / this.rows;//縦を２０個のブロックにわける
+    private blockW = this.w / this.cols;//横を１０個のブロックに分ける
+    private blockH = this.h / this.rows;//縦を２０個のブロックにわける
     private result:Board[][];
     private block:Block;//操作しているBlock
 
@@ -30,23 +30,22 @@ export class Render{
         //キャンバスをリセット
         this.ctx.clearRect(0,0,this.w,this.h);
         this.ctx.strokeStyle = 'black';
+        const blocks = this.block.form[this.block.angle];
 
-        for(let i = 0; i < this.cols; i++){
-            for(let j = 0; j < this.rows; j++){
+        for(let x = 0; x < this.cols; x++){
+            for(let y = 0; y < this.rows; y++){
 
-                if(this.result[j][i].type != 0){
+                // if(this.result[x][y].type != 0){
 
-                    this.ctx.fillStyle = this.result[j][i].color;
+                    this.ctx.fillStyle = this.result[x][y].color;
+                    this.drawBlock(x,y);
 
-                    this.drawBlock(i,j);
-
-                }
+                // }
 
             }
         }
-    //ここでいくら動いたかを管理する変数をどうやって参照するかなやむ
-        for(let b of this.block.form[this.block.angle]){
-            this.drawBlock(b.x,b.y);
+        for(let b in blocks){
+            this.drawBlock(blocks[b].x,blocks[b].y);
         }
     }
 
@@ -56,9 +55,8 @@ export class Render{
      * @param y {number}
      */
     private drawBlock(x:number,y:number){
-        this.ctx.fillRect(this.BlockW * x, this.BlockH * y,this.BlockW,this.BlockH);
-        this.ctx.strokeRect(this.BlockW * x, this.BlockH * y,this.BlockW, this.BlockH);
+        this.ctx.fillRect(this.blockW * x, this.blockH * y,this.blockW,this.blockH);
+        this.ctx.strokeRect(this.blockW * x, this.blockH * y,this.blockW, this.blockH);
     }
+
 }
-//30ミリ秒で呼び出される
-setInterval(this.render(),30);
