@@ -4,6 +4,7 @@ import {Board} from "../model/Board";
 import {Block} from "../model/Block";
 import {Point} from "../../server/model/Point";
 import {TetrisController} from "./TetrisController";
+import {Render} from "./Render";
 
 /**
  * Created by vista on 2016/07/07.
@@ -12,16 +13,23 @@ import {TetrisController} from "./TetrisController";
 export class Tetris{
     private blockFactory:BlockFactory;
     private blockList:BlockType[];
-    private cols = 20;//横
-    private rows = 40;//縦
+    private cols = 10;//横
+    private rows = 20;//縦
     private result:Board[][];
     private lose;
     private interval;
     private block:Block;//今操作してるブロック
     private tCon:TetrisController;
+    private render:Render;
 
-    constructor(tcon:TetrisController){
-        this.tCon = tcon;
+    constructor(/*tcon:TetrisController*/){
+        // this.tCon = tcon;
+        this.blockFactory = BlockFactory.getInstance();
+        this.result = [];
+       for(let x = 0; x < this.cols; x++){
+           this.result[x] = [];
+       }
+
     }
 
     /**
@@ -40,6 +48,7 @@ export class Tetris{
         this.init();
         //初期のブロックをセット
         this.newBlock();
+        this.render = new Render(this.result,this.block);
         this.lose = false;
         this.interval = setInterval(this.tick(),250);
     }
@@ -77,12 +86,12 @@ export class Tetris{
     private valid(offsetX:number=0,offsetY:number=0, newBlock:Block=this.block):boolean{
         offsetX = this.block.point.x + offsetX;
         offsetY = this.block.point.y + offsetY;
-        const blocks = newBlock.form[newBlock.angle];
-        for(let block of blocks){
+        const blocks:Point[] = newBlock.form[newBlock.angle];
+        for(let i in blocks){
 
-            if(this.result[block.x + offsetX][block.y + offsetY].type != 0 &&
-                    this.result[block.x + offsetX][block.y + offsetY].type == undefined){
-                if( (newBlock.point.y + block.y) <=  0  ){
+            if(this.result[blocks[i].x + offsetX][blocks[i].y + offsetY].type != 0 &&
+                    this.result[blocks[i].x + offsetX][blocks[i].y + offsetY].type == undefined){
+                if( (newBlock.point.y + blocks[i].y) <=  0  ){
                     this.lose = true;
                 }
                 return false;
@@ -90,6 +99,7 @@ export class Tetris{
 
         }
 
+        this.render.render();
         return true;
 
     }
@@ -98,9 +108,8 @@ export class Tetris{
      * ブロックタイプの配列から次の要素を取得してBlockインスタンスを返す
      */
     private newBlock(){
+        console.log(this.blockList);
         const block =  this.blockFactory.getBlock(this.blockList.pop());
-        block.point.x = this.cols / 2;
-        block.point.y = this.rows / 2;
         this.block = block;
     }
 
@@ -110,13 +119,14 @@ export class Tetris{
     private init(){
         for(let x = 0;x < this.cols; x++){
             for(let y = 0;y < this.rows;y++){
-                if(x == 0 || (x == this.cols-1)){
+                if(x == 0 || x == this.cols-1){
                     this.result[x][y] = {type:-1,color:"black"};
-                }else if(y == this.rows -1){
-                    this.result[x][y] = {type:-1,color:"black"};
+                }else if(y == (this.rows -1) || y == 0 ){
+                    this.result[x][y] = {type:-1,color:"red"};
                 }else {
-                    this.result[x][y] = {type:0,color:"white"};
+                    this.result[x][y] = {type:0,color:"green"};
                 }
+
             }
         }
 
