@@ -82,7 +82,9 @@ export abstract class Block{
      * 回転角度セット
      * @param angle{number}
      */
-    public set angle(angle:number){this._angle = angle;}
+    public set angle(angle:number){
+        this._angle = this.angle + (angle % 4);
+    }
 
     /**
      * 回転角度取得
