@@ -12,7 +12,7 @@ export abstract class Block{
     private _point:Point;//支点の位置
     private _date:Date;//着地した時の時間
     private _angle:number;//0:初期,1:右に90度,2:180度,3:左に90度
-    private _name:BlockType;
+    private static _name:BlockType;
     private _color:string;
 
     constructor(){
