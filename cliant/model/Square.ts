@@ -14,6 +14,12 @@ export class Square extends Block{
         super();
     }
     
+    public reset(){
+        super.reset();
+        this.point.y = 0;
+
+    }
+    
     protected createForm():Point[][]{
         return [[{x:0,y:1},{x:1,y:1},{x:1,y:0}]];
     }

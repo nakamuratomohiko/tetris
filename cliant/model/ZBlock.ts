@@ -11,6 +11,11 @@ export class ZBlock extends Block{
         super();
     }
 
+    public reset(){
+        super.reset();
+        this.point.y = 1;
+    }
+
     protected createColor():string{
         return "green";
     }
