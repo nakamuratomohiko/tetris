@@ -17,7 +17,7 @@ export abstract class Block{
 
     constructor(){
         this._form = this.createForm();
-        this._name = this.setBlockType();
+        this._blockType = this.setBlockType();
         this._color = this.createColor();
     }
 
