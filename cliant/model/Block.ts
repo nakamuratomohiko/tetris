@@ -23,6 +23,13 @@ export abstract class Block{
     }
 
     /**
+     * tetrisで戻したいプロパティを初期値に戻す
+     */
+    public  reset(){
+        this._angle = 0;
+    };
+    
+    /**
      * カラー
      */
     protected abstract createColor():string;
