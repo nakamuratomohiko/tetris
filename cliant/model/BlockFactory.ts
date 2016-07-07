@@ -13,7 +13,7 @@ import {Square} from "./Square";
 export class BlockFactory{
 
     //すでに作ったインスタンスを管理
-    private pool:{} ;
+    private pool:Block[];
 
     //Singletonパターン
     private static  singleton:BlockFactory = new BlockFactory();
@@ -22,7 +22,8 @@ export class BlockFactory{
      * コンストラクタ
      */
     constructor(){
-        const sq:Square = new Square();
+        this.pool  = [];
+        const sq = new Square();
         this.pool[sq.blockType] = sq;
         const lb = new LBlock();
         this.pool[lb.blockType] = lb;
