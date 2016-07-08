@@ -10,122 +10,127 @@ import {Render} from "./Render";
  * Created by vista on 2016/07/07.
  */
 
-export class Tetris{
+export class Tetris {
     private blockFactory:BlockFactory;
     private blockList:BlockType[];
-    private cols = 10;//横
-    private rows = 20;//縦
+    private cols:number = 10;//横
+    private rows:number = 20;//縦
     private result:Board[][];
-    private lose;
+    private _lose:boolean;
     private interval;
     private block:Block;//今操作してるブロック
     private tCon:TetrisController;
     private render:Render;
 
-    constructor(/*tcon:TetrisController*/){
-        // this.tCon = tcon;
+    constructor(tcon:TetrisController) {
+        this.tCon = tcon;
         this.blockFactory = BlockFactory.getInstance();
         this.result = [];
-       for(let x = 0; x < this.cols; x++){
-           this.result[x] = [];
-       }
+        for (let x = 0; x < this.cols; x++) {
+            this.result[x] = [];
+        }
 
+    }
+
+    public getBlock() {
+        return this.block;
+    }
+
+    public get lose():boolean{
+        return this._lose;
     }
 
     /**
      *  新しいBlockListをセットする
      *  @param blockList {BlockType[]}
      */
-    public setBlockList(blockList:BlockType[]){
+    public setBlockList(blockList:BlockType[]) {
         this.blockList = blockList;
     }
 
     /**
      * ゲームをスタートさせる
      */
-    public newGame(){
+    public newGame() {
         clearInterval(this.interval);
         this.init();
         //初期のブロックをセット
         this.render = new Render(this.result);
         this.newBlock();
-        this.lose = false;
-        this.interval = setInterval(()=>this.tick(),250);
+        this._lose = false;
+        this.interval = setInterval(()=>this.tick(), 250);
     }
 
     /**
      * 自動でずらす、ブロックの検証もしている
      */
-    public tick(){
+    public tick(offsetX:number = 0, offsetY:number = 1, rotate:number = 0) {
         this.render.render();
-        if(this.valid(0,1)){//何もなければ１つ下がる
-            this.block.point.y += 1;
-            console.log("point+y"+this.block.point.y);
+        if (this.valid(offsetX, offsetY, rotate)) {
+            this.block.point.y += offsetY;
+            this.block.point.x += offsetX;
+            this.block.angle = rotate;
             this.render.render();
 
-        }else{//何かあったとき
-            this.freeze();
-            if(this.valid()){
-                this.newBlock();
-                console.log("true");
-            }else{
-                console.log("false");
-                if(this.lose){
-                    //新しく始めるのかどうするのかを決める
-                    // this.tCon.finishGame();
-                    // this.newGame();
-                    clearInterval(this.interval);
-                    console.log("end");
-                    return;
-                }
+        } else {//何かあったとき
 
+            if (this.valid(0, 1)) {
+                return;
             }
-            this.render.render();
-            // this.clearLine();
-            // if(this.lose){
-            //     //新しく始めるのかどうするのかを決める
-            //     // this.tCon.finishGame();
-            //     // this.newGame();
-            //     clearInterval(this.interval);
-            //     console.log("end");
-            //     return;
-            // }
-
+            if(this.valid()){
+                this.freeze();
+                this.clearLine();
+                this.newBlock();
+            }
+            if (this._lose) {
+                //新しく始めるのかどうするのかを決める
+                // this.tCon.finishGame();
+                clearInterval(this.interval);
+                return;
+            }
 
         }
+        this.render.render();
 
     }
+
 
     /**
      * 検証
      * @param offsetX {number} 横に動く数
      * @param offsetY {number} 縦に動く数
+     * @param rotate {number} 回転右回転
      * @param newBlock {Block}　
      * @returns {boolean}　OKかダメか
      */
-    private valid(offsetX:number=0,offsetY:number=0):boolean{
+    public valid(offsetX:number = 0, offsetY:number = 0, rotate:number = 0):boolean {
         const block = this.block;
+        const result = this.result;
         offsetX = block.point.x + offsetX;
         offsetY = block.point.y + offsetY;
 
-        const blocks:Point[] = block.form[block.angle];
+        const blocks:Point[] = block.form[(block.angle + rotate) % 4];
+        const coreType = result[offsetX][offsetY].type;
 
-        for(let i in blocks){
-            let type  = this.result[blocks[i].x + offsetX][blocks[i].y + offsetY].type;
+        for (let i in blocks) {
+            let type = result[blocks[i].x + offsetX][blocks[i].y + offsetY].type;
 
-            if(offsetX == block.point.x &&
+            //ブロックが動いていないときの検証
+            if (rotate == 0 && offsetX == block.point.x &&
                 offsetY == block.point.y &&
-                this.result[block.point.x + blocks[i].x] [block.point.y + blocks[i].y ].type == -2){
+                (result[block.point.x + blocks[i].x] [block.point.y + blocks[i].y].type == -2 ||
+                coreType == -2)) {
                 console.log("lose");
-                this.lose = true;
+                this._lose = true;
                 return false;
-            }else if( (offsetX != block.point.x || offsetY != block.point.y ) &&
-                type == 1 || type === undefined || type == -1 ){
+
+                //ブロックが動く方向の検証
+            } else if ( type == 1 || type === undefined || type == -1 ||
+                            coreType == 1 || coreType ===undefined || coreType == -1) {
                 console.log("miss");
                 console.log(type);
                 return false;
             }
-
 
 
         }
@@ -137,8 +142,8 @@ export class Tetris{
     /**
      * ブロックタイプの配列から次の要素を取得してBlockインスタンスを返す
      */
-    private newBlock(){
-        const block =  this.blockFactory.getBlock(this.blockList.pop());
+    private newBlock() {
+        const block = this.blockFactory.getBlock(this.blockList.pop());
         block.reset();
         block.point.x = this.cols / 2;
         this.block = block;
@@ -148,20 +153,21 @@ export class Tetris{
     /**
      * 配列をきれいに戻す
      */
-    private init(){
-        for(let x = 0;x < this.cols; x++){
-            for(let y = 0;y < this.rows;y++){
-                if(x == 0 || x == this.cols-1){
-                    this.result[x][y] = {type:-1,color:"black"};
+    private
+    init() {
+        for (let x = 0; x < this.cols; x++) {
+            for (let y = 0; y < this.rows; y++) {
+                if (x == 0 || x == this.cols - 1) {
+                    this.result[x][y] = {type: -1, color: "black"};
 
-                }else if(y == (this.rows -1) || y == 0 ){
-                    this.result[x][y] = {type:-1,color:"black"};
+                } else if (y == (this.rows - 1) || y == 0) {
+                    this.result[x][y] = {type: -1, color: "black"};
 
-                }else if( y == 1 || y == 2 || y == 3 || y == 4){
-                    this.result[x][y] = {type:-2,color:"red"}
+                } else if (y == 1 || y == 2 || y == 3 || y == 4) {
+                    this.result[x][y] = {type: -2, color: "gray"}
 
-                }else {
-                    this.result[x][y] = {type:0,color:"white"};
+                } else {
+                    this.result[x][y] = {type: 0, color: "white"};
                 }
 
             }
@@ -172,50 +178,49 @@ export class Tetris{
     /**
      * ブロックを固定させる
      */
-    public freeze(){
+    public freeze() {
         const blocks:Point[] = this.block.form[this.block.angle];
-        const point = {x:this.block.point.x,y:this.block.point.y};
+        const point = {x: this.block.point.x, y: this.block.point.y};
 
-        const board = {type:1,color:this.block.color};
+        const board = {type: 1, color: this.block.color};
         this.result[point.x][point.y] = board;
-        for(let block of blocks){
-            if(this.result[block.x + point.x][block.y + point.y].type == -2){
+        for (let block of blocks) {
+            if (this.result[block.x + point.x][block.y + point.y].type == -2) {
 
-            }else{
+            } else {
                 this.result[block.x + point.x][block.y + point.y] = board;
 
             }
         }
-        
+
     }
 
     /**
      * 一列に並んでいるラインがあれば消す
      */
-    public clearLine(){
-        for(let y = 0; y < this.rows; y++){
+    public
+    clearLine() {
+
+            for (let y = 5; y < this.rows -1 ; y++) {
             let rowLine = true;
-            for(let x = 0; x < this.cols; x++){
-                if(this.result[x][y].type == 0){
+            for (let x = 0; x < this.cols ; x++) {
+                if (this.result[x][y].type == 0) {
                     rowLine = false;
                     break;
                 }
             }
 
-            if(rowLine){
-                for(let yy = y; yy > 0; yy--){
-                    for(let x = 1; x < this.cols -1; x++){
-                        this.result[x][yy] = this.result[x][yy - 1 ];
+            if (rowLine) {
+                for (let yy = y; yy > 5; yy--) {
+                    for (let x = 1; x < this.cols - 1; x++) {
+                        this.result[x][yy] = this.result[x][yy - 1];
                     }
                 }
 
-                y++;
             }
 
         }
     }
-
-
 
 
 }
