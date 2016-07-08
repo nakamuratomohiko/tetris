@@ -16,7 +16,7 @@ export class Square extends Block{
     
     public reset(){
         super.reset();
-        this.point.y = 0;
+        this.point.y = 1;
 
     }
     
