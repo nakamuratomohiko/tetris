@@ -86,6 +86,7 @@ export class Tetris {
                 //新しく始めるのかどうするのかを決める
                 // this.tCon.finishGame();
                 clearInterval(this.interval);
+                this.tCon.finishGame();
                 return;
             }
 
