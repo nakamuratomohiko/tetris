@@ -21,7 +21,10 @@ export class Square extends Block{
     }
     
     protected createForm():Point[][]{
-        return [[{x:0,y:1},{x:1,y:1},{x:1,y:0}]];
+        return [[{x:0,y:1},{x:1,y:1},{x:1,y:0}],
+            [{x:0,y:1},{x:1,y:1},{x:1,y:0}],
+            [{x:0,y:1},{x:1,y:1},{x:1,y:0}],
+            [{x:0,y:1},{x:1,y:1},{x:1,y:0}]];
     }
     
     protected setBlockType():BlockType{
@@ -31,6 +34,7 @@ export class Square extends Block{
     protected createColor():string{
         return "yellow";
     }
+    
 
 
 
