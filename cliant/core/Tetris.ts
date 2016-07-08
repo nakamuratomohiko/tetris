@@ -47,30 +47,50 @@ export class Tetris{
         clearInterval(this.interval);
         this.init();
         //初期のブロックをセット
+        this.render = new Render(this.result);
         this.newBlock();
-        this.render = new Render(this.result,this.block);
         this.lose = false;
-        this.interval = setInterval(this.tick(),250);
+        this.interval = setInterval(()=>this.tick(),250);
     }
 
     /**
      * 自動でずらす、ブロックの検証もしている
      */
-    private tick(){
-
+    public tick(){
+        this.render.render();
         if(this.valid(0,1)){//何もなければ１つ下がる
-            this.block.point.x++;
+            this.block.point.y += 1;
+            console.log("point+y"+this.block.point.y);
+            this.render.render();
+
         }else{//何かあったとき
             this.freeze();
-            this.clearLine();
+            if(this.valid()){
+                this.newBlock();
+                console.log("true");
+            }else{
+                console.log("false");
+                if(this.lose){
+                    //新しく始めるのかどうするのかを決める
+                    // this.tCon.finishGame();
+                    // this.newGame();
+                    clearInterval(this.interval);
+                    console.log("end");
+                    return;
+                }
 
-            if(this.lose){
-                //新しく始めるのかどうするのかを決める
-                // this.tCon.finishGame();
-                this.newGame();
             }
+            this.render.render();
+            // this.clearLine();
+            // if(this.lose){
+            //     //新しく始めるのかどうするのかを決める
+            //     // this.tCon.finishGame();
+            //     // this.newGame();
+            //     clearInterval(this.interval);
+            //     console.log("end");
+            //     return;
+            // }
 
-            this.newBlock();//新しいブロックをセット
 
         }
 
@@ -83,23 +103,33 @@ export class Tetris{
      * @param newBlock {Block}　
      * @returns {boolean}　OKかダメか
      */
-    private valid(offsetX:number=0,offsetY:number=0, newBlock:Block=this.block):boolean{
-        offsetX = this.block.point.x + offsetX;
-        offsetY = this.block.point.y + offsetY;
-        const blocks:Point[] = newBlock.form[newBlock.angle];
-        for(let i in blocks){
+    private valid(offsetX:number=0,offsetY:number=0):boolean{
+        const block = this.block;
+        offsetX = block.point.x + offsetX;
+        offsetY = block.point.y + offsetY;
 
-            if(this.result[blocks[i].x + offsetX][blocks[i].y + offsetY].type != 0 &&
-                    this.result[blocks[i].x + offsetX][blocks[i].y + offsetY].type == undefined){
-                if( (newBlock.point.y + blocks[i].y) <=  0  ){
-                    this.lose = true;
-                }
+        const blocks:Point[] = block.form[block.angle];
+
+        for(let i in blocks){
+            let type  = this.result[blocks[i].x + offsetX][blocks[i].y + offsetY].type;
+
+            if(offsetX == block.point.x &&
+                offsetY == block.point.y &&
+                this.result[block.point.x + blocks[i].x] [block.point.y + blocks[i].y ].type == -2){
+                console.log("lose");
+                this.lose = true;
+                return false;
+            }else if( (offsetX != block.point.x || offsetY != block.point.y ) &&
+                type == 1 || type === undefined || type == -1 ){
+                console.log("miss");
+                console.log(type);
                 return false;
             }
 
+
+
         }
 
-        this.render.render();
         return true;
 
     }
@@ -108,9 +138,11 @@ export class Tetris{
      * ブロックタイプの配列から次の要素を取得してBlockインスタンスを返す
      */
     private newBlock(){
-        console.log(this.blockList);
         const block =  this.blockFactory.getBlock(this.blockList.pop());
+        block.reset();
+        block.point.x = this.cols / 2;
         this.block = block;
+        this.render.setBlock(block);
     }
 
     /**
@@ -121,10 +153,15 @@ export class Tetris{
             for(let y = 0;y < this.rows;y++){
                 if(x == 0 || x == this.cols-1){
                     this.result[x][y] = {type:-1,color:"black"};
+
                 }else if(y == (this.rows -1) || y == 0 ){
-                    this.result[x][y] = {type:-1,color:"red"};
+                    this.result[x][y] = {type:-1,color:"black"};
+
+                }else if( y == 1 || y == 2 || y == 3 || y == 4){
+                    this.result[x][y] = {type:-2,color:"red"}
+
                 }else {
-                    this.result[x][y] = {type:0,color:"green"};
+                    this.result[x][y] = {type:0,color:"white"};
                 }
 
             }
@@ -137,8 +174,17 @@ export class Tetris{
      */
     public freeze(){
         const blocks:Point[] = this.block.form[this.block.angle];
+        const point = {x:this.block.point.x,y:this.block.point.y};
+
+        const board = {type:1,color:this.block.color};
+        this.result[point.x][point.y] = board;
         for(let block of blocks){
-            this.result[block.x][block.y] = {type:1,color:this.block.color};
+            if(this.result[block.x + point.x][block.y + point.y].type == -2){
+
+            }else{
+                this.result[block.x + point.x][block.y + point.y] = board;
+
+            }
         }
         
     }
