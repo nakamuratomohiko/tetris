@@ -91,7 +91,7 @@ export abstract class Block{
      * @param angle{number}
      */
     public set angle(angle:number){
-        this._angle = this.angle + (angle % 4);
+        this._angle = (this._angle + angle) % 4;
     }
 
     /**
