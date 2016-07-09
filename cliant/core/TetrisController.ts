@@ -2,6 +2,7 @@ import {Communicator} from "./Communicator";
 import {Tetris} from "./Tetris";
 import {BlockType} from "../../server/model/BlockType";
 import {Block} from "../model/Block";
+import {User} from "../model/User";
 /**
  * Created by vista on 2016/07/07.
  */
@@ -10,12 +11,13 @@ export class TetrisController{
 
     private commu:Communicator;
     private tetris:Tetris;
+    private user:User;
 
     constructor(){
         this.commu = new Communicator;
         this.tetris = new Tetris(this);
         document.body.onkeydown = (e)=>this.onKeyDown(e);
-
+        this.user = new User();
     }
 
     /**
@@ -31,6 +33,23 @@ export class TetrisController{
      */
     public start(){
         this.tetris.newGame();
+    }
+
+    /**
+     * ユーザをセットする
+     * @param user
+     */
+    public setUser(name:string,score:number){
+        this.user.name = name;
+        this.user.score = score;
+    }
+
+    /**
+     * ユーザのスコアをセットする
+     * @returns {number}
+     */
+    public getScore():number{
+        return this.user.score;
     }
 
 
