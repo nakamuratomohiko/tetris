@@ -1,6 +1,7 @@
 import {Communicator} from "./Communicator";
 import {Tetris} from "./Tetris";
 import {BlockType} from "../../server/model/BlockType";
+import {Block} from "../model/Block";
 /**
  * Created by vista on 2016/07/07.
  */
@@ -17,17 +18,38 @@ export class TetrisController{
 
     }
 
-    public setBlockList(blockList:BlockType[]){
+    /**
+     * ClientのTetrisのセット
+     * @param blockList {BlockType}
+     */
+    public ready(blockList:BlockType[]){
         this.tetris.setBlockList(blockList);
+    }
+
+    /**
+     * ClientのTetrisを動かす
+     */
+    public start(){
         this.tetris.newGame();
     }
-    
-    public newGame(){
-        this.newGame();
+
+
+    public pushBlock(block:Block){
+        //serverにブロックを送る
+        
     }
 
     
 
+
+    public finishGame():void{
+        //serverに終了を告げる
+    }
+
+    /**
+     * キーをセット
+     * @param e
+     */
     private onKeyDown(e):void{
 
         //キーに名前をセットする
@@ -40,7 +62,7 @@ export class TetrisController{
 
         if(typeof keys[e.keyCode] != 'undefined'){
             if(!this.tetris.lose) {
-                this.keydown(keys[e.keyCode]);
+                this.keyDown(keys[e.keyCode]);
             }
         }
 
@@ -48,9 +70,11 @@ export class TetrisController{
     }
 
 
-
-
-    private keydown( key ){
+    /**
+     * キーの動作設定
+     * @param key
+     */
+    private keyDown( key ){
         
         switch (key){
 
@@ -63,6 +87,9 @@ export class TetrisController{
                 break;
             case 'right':
                 this.tetris.tick(1,0,0);
+                break;
+            case 'down':
+                this.tetris.tick(0,1);
                 break;
         }
     }
