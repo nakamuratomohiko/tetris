@@ -14,7 +14,7 @@ export class User{
      * @type {number}
      * @private
      */
-    private _maxScore:number = 0;
+    private _score:number = 0;
 
     /**
      * getter Name
@@ -36,16 +36,16 @@ export class User{
      * getter maxScore
      * @returns {number}
      */
-    public get maxScore():number{
-        return this._maxScore;
+    public get score():number{
+        return this._score;
     }
 
     /**
      * setter maxScore
      * @param maxScore{number}
      */
-    public set maxScore(maxScore:number){
-        this._maxScore = maxScore;
+    public set score(maxScore:number){
+        this._score = maxScore;
     }
 
 }
