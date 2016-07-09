@@ -41,5 +41,4 @@ typings
 *.js
 *.map
 test.*
-/cliant/core/app.ts
 /cliant/core/test/
