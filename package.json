@@ -1,0 +1,24 @@
+{
+  "name": "tetris",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "fs": "^0.0.2",
+    "typings": "^1.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nakamuratomohiko/tetris.git"
+  },
+  "author": "Tomohiko Nakamura",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nakamuratomohiko/tetris/issues"
+  },
+  "homepage": "https://github.com/nakamuratomohiko/tetris#readme"
+}
