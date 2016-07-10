@@ -80,7 +80,10 @@ export class Tetris {
             if(this.valid()){
                 this.freeze();
                 this.clearLine();
+                this.tCon.pushBlock(this.block);
                 this.newBlock();
+                if(this.block === undefined){this._lose ==true}
+
             }
             if (this._lose) {
                 //新しく始めるのかどうするのかを決める
@@ -121,15 +124,12 @@ export class Tetris {
                 offsetY == block.point.y &&
                 (result[block.point.x + blocks[i].x] [block.point.y + blocks[i].y].type == -2 ||
                 coreType == -2)) {
-                console.log("lose");
                 this._lose = true;
                 return false;
 
                 //ブロックが動く方向の検証
             } else if ( type == 1 || type === undefined || type == -1 ||
                             coreType == 1 || coreType ===undefined || coreType == -1) {
-                console.log("miss");
-                console.log(type);
                 return false;
             }
 
