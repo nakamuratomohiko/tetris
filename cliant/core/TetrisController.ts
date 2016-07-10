@@ -14,7 +14,7 @@ export class TetrisController{
     private user:User;
 
     constructor(){
-        this.commu = new Communicator;
+        this.commu = new Communicator(this);
         this.tetris = new Tetris(this);
         document.body.onkeydown = (e)=>this.onKeyDown(e);
         this.user = new User();
@@ -52,9 +52,18 @@ export class TetrisController{
         return this.user.score;
     }
 
+    //ユーザのスコアよりも高かった場合に表示、ユーザのスコア更新
+    public notifyScore(score:number){
 
+    }
+
+    /**
+     * サーバにブロックを送る
+     * @param block
+     */
     public pushBlock(block:Block){
         //serverにブロックを送る
+        this.commu.pushBlock(block);
         
     }
 
