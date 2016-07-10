@@ -49,7 +49,6 @@ export class Render{
         this.ctx.fillStyle = this.block.color;
         this.drawBlock(this.block.point.x,this.block.point.y);
         for(let b in blocks){
-            console.log("block");
             this.drawBlock(blocks[b].x + point.x,blocks[b].y + point.y);
         }
     }
