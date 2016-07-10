@@ -42,3 +42,5 @@ typings
 *.map
 test.*
 /cliant/core/test/
+/cliant/core/server.ts
+/cliant/dist/
