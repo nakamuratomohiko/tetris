@@ -1,6 +1,6 @@
 import {Communicator} from "./Communicator";
 import {Tetris} from "./Tetris";
-import {BlockType} from "../../server/model/BlockType";
+import {BlockType} from "../../cliant/model/BlockType";
 import {Block} from "../model/Block";
 import {User} from "../model/User";
 /**
@@ -66,6 +66,13 @@ export class TetrisController{
         this.commu.pushBlock(block);
         
     }
+        
+    //エラーが起きたときに表示する
+    public Error(msg:string){
+
+    }
+    
+    
 
     
 
