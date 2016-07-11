@@ -9,7 +9,9 @@ import {Render} from "./Render";
 /**
  * Created by vista on 2016/07/07.
  */
-
+/**
+ *　テトリスの処理をするクラス
+ */
 export class Tetris {
     private blockFactory:BlockFactory;
     private blockList:BlockType[];
