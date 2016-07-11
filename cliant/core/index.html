@@ -3,10 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>TETRISDEMO</title>
+    <script>
+    </script>
 </head>
 <body>
-    <canvas width="400" height="800"></canvas>
-    <script src="app"></script>
-
+    <div style="float:left;">
+            <label form="name">Name:</label>
+            <input id="name" type="text" maxlength="10" />
+            <input id="refresh" type="button"  value="準備"/>
+            <input id="start" type="button" value="スタート" />
+            <h2 id="score">tokuten:</h2><br>
+            <h1 id="error" style="color:#ff0c17;">aaa</h1>
+    </div>
+    <div style="float:right;">
+        <canvas id="canvas" width="300" height="600"></canvas>
+        <script src="app"></script>
+    </div>
 </body>
 </html>
