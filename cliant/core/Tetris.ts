@@ -24,22 +24,26 @@ export class Tetris {
     private tCon:TetrisController;
     private render:Render;
 
-    constructor(tcon:TetrisController) {
-        this.tCon = tcon;
+    constructor(tCon:TetrisController) {
+        this.tCon = tCon;
         this.blockFactory = BlockFactory.getInstance();
         this.result = [];
         for (let x = 0; x < this.cols; x++) {
             this.result[x] = [];
         }
+        //配列を初期化する
+        this.init();
+        //初期のブロックをセット
+        this.render = new Render(this.result);
 
     }
 
-    public getBlock() {
-        return this.block;
-    }
-
-    public get lose():boolean{
-        return this._lose;
+    /**
+     * 不正が疑われた時などに呼び出されるメソッド
+     */
+    public invalidOperation(){
+        this._lose = true;
+        clearInterval(this.interval);
     }
 
     /**
@@ -67,7 +71,6 @@ export class Tetris {
      * 自動でずらす、ブロックの検証もしている
      */
     public tick(offsetX:number = 0, offsetY:number = 1, rotate:number = 0) {
-        this.render.render();
         if (this.valid(offsetX, offsetY, rotate)) {
             this.block.point.y += offsetY;
             this.block.point.x += offsetX;
@@ -77,6 +80,7 @@ export class Tetris {
         } else {//何かあったとき
 
             if (this.valid(0, 1)) {
+                this.render.render();
                 return;
             }
             if(this.valid()){
@@ -84,7 +88,8 @@ export class Tetris {
                 this.clearLine();
                 this.tCon.pushBlock(this.block);
                 this.newBlock();
-                if(this.block === undefined){this._lose ==true}
+                this.render.render();
+
 
             }
             if (this._lose) {
@@ -96,7 +101,6 @@ export class Tetris {
             }
 
         }
-        this.render.render();
 
     }
 
@@ -146,11 +150,15 @@ export class Tetris {
      * ブロックタイプの配列から次の要素を取得してBlockインスタンスを返す
      */
     private newBlock() {
-        const block = this.blockFactory.getBlock(this.blockList.pop());
-        block.reset();
-        block.point.x = this.cols / 2;
-        this.block = block;
-        this.render.setBlock(block);
+        this.block = this.blockFactory.getBlock(this.blockList.pop());
+        if(this.block === undefined){
+            this._lose = true;
+            this.render.setBlock(this.block);
+            return;
+        }
+        this.block.reset();
+        this.block.point.x = this.cols / 2;
+        this.render.setBlock(this.block);
     }
 
     /**
