@@ -11,6 +11,11 @@ export class LBlock extends Block{
     constructor(){
         super();
     }
+    
+    public reset(){
+        super.reset();
+        this.point.y = 1;
+    }
 
     protected createColor():string{
         return "orange";
