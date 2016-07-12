@@ -42,6 +42,13 @@ export class Communicator{
             tc.notifyScore(score);
         });
 
+        /**
+         * ランキングの配列が来る
+         */
+        this.socket.on('finishGame',function(rank){
+           tc.ranking(rank);
+        });
+
         
         
     }
