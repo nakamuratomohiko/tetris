@@ -9,6 +9,8 @@ import {BlockType} from "../model/BlockType";
  */
 export class Generator{
 
+    private static instance:Generator;
+    
     private _ramBlock = [
         BlockType.Rectangle,
         BlockType.LBlock,
@@ -17,6 +19,21 @@ export class Generator{
         BlockType.Square,
         BlockType.ZBlock
     ];
+    
+    constructor(){
+        
+    }
+
+    /**
+     * singletonのインスタンスを返す
+     * @returns {Generator}
+     */
+    public  static getInstance():Generator{
+        if(this.instance == undefined){
+            this.instance = new Generator();
+        }
+        return this.instance;
+    }
 
     /**
      * BlockTypeが入った配列を返す
@@ -26,31 +43,10 @@ export class Generator{
         let result:BlockType[] = [];
 
         for(let i:number = 0; i < 100;i++){
-            let ram:number = Math.random()*100 % 6;
+            let ram:number = Math.floor(Math.random()*100) % 6;
             result[i]= this._ramBlock[ram]
-
         }
         return result;
     }
-/*
-    private getBlock(ram:number):Block{
 
-        let result:Block;
-        if(ram == 0){
-            result = new Rectangle();
-        }else if(ram == 1) {
-            result = new LBlock();
-        }else if(ram == 2){
-            result = new ReverseLBlock();
-        }else if(ram == 3){
-            result = new ReverseZBlock();
-        }else if(ram == 4){
-            result = new Square();
-        }else if(ram == 5){
-            result = new ZBlock();
-        }
-
-        return result;
-    }
-    */
 }
