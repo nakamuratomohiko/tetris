@@ -39,6 +39,13 @@ export class Tetris {
     }
 
     /**
+     * loseフラグを返す
+     * @returns {boolean}
+     */
+    public get lose(){return this._lose}
+    
+
+    /**
      * 不正が疑われた時などに呼び出されるメソッド
      */
     public invalidOperation(){
