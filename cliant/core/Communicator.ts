@@ -45,7 +45,7 @@ export class Communicator{
         /**
          * ランキングの配列が来る
          */
-        this.socket.on('finishGame',function(rank){
+        this.socket.on('ranking',function(rank){
            tc.ranking(rank);
         });
 
