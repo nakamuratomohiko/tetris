@@ -20,6 +20,10 @@ export class Render{
         this.render();
     }
 
+    /**
+     * Blockをセットする
+     * @param block
+     */
     public setBlock(block):void{
         this.block = block;
     }
@@ -45,6 +49,7 @@ export class Render{
             }
         }
 
+        //ブロックがなければ書かない
         if(this.block !== undefined) {
             const blocks = this.block.form[this.block.angle];
             const point = this.block.point;
