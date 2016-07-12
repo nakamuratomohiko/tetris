@@ -3,10 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>TETRISDEMO</title>
+    <style>
 
+        table {
+            border-color: black;
+            border-width: 1px;
+            border-style: solid;
+            witdh: 200px;
+
+        }
+
+        th{
+
+            border-color: black;
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        td{
+            border-color: black;
+            border-width: 1px;
+            border-style: solid;
+
+        }
+        #left {
+            float: left;
+        }
+        #error{
+            color:#ff0c17;
+        }
+        #right{
+            float:none;
+        }
+
+    </style>
 </head>
 <body>
-<div id="left" style="float:left;">
+<div id="left">
     <label form="name">Name:</label>
     <input id="name" type="text" maxlength="10"/>
     <input id="refresh" type="button" value="準備"/>
@@ -15,9 +48,14 @@
     <label form="score">得点:</label>
     <h2 id="score"></h2>
 
-    <h1 id="error" style="color:#ff0c17;"></h1>
+    <table id="table">
+        <tr><th>rank</th><th>name</th><th>score</th></tr>
+    </table>
+
+
+    <h1 id="error"></h1>
 </div>
-<div id="right" style="float:none;">
+<div id="right" >
     <canvas id="canvas" width="400" height="800"></canvas>
     <script src="app"></script>
 </div>
