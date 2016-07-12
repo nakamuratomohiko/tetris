@@ -1,6 +1,7 @@
 import * as io from "socket.io-client";
 import {Block} from "../../cliant/model/Block";
 import {TetrisController} from "./TetrisController";
+import {BlockType} from "../model/BlockType";
 
 /**
  * Created by vista on 2016/07/08.
@@ -14,53 +15,49 @@ export class Communicator{
     private socket;
     private tCon:TetrisController;
     constructor(tCon:TetrisController){
-        this.socket = io.connect('http://localhost:8080');
         this.tCon = tCon;
-        this.socket.on('connection',function(){ console.log("conn")});
+        const tc = this.tCon;
+        this.socket = io.connect('http://localhost:8080');
+        /**
+         * 現在の通信のIDを設定
+         */
+        this.socket.on('connection',function(){});
         /**
          * BlockList:BlockType[]を送ってくる
          */
-        this.socket.on('ready',function(data:string){   
-            const obj = JSON.parse(data);
-            this.tCon.ready(obj.blockList);
+        this.socket.on('ready',function(blockList:BlockType[]){
+            tc.setBlockList(blockList);
         });
         /**
          * サーバ内でエラーが起きたときに送信してくる
+         * 不正なそうさが起きたときにたたかれる
          */
         this.socket.on('Error',function(msg:string){
-            this.tCon.Error(msg);
+            tc.Error(msg);
         });
         /**
          * スコアを通知してくる
          */
-        this.socket.on('notifyScore',function(msg:string){
-            this.tCon.notifyScore(msg);
+        this.socket.on('notifyScore',function(score:number){
+            tc.notifyScore(score);
         });
 
-        /**
-         * これは検証でおかしければ送信してくる
-         */
-        this.socket.on('verification',function (msg:string){
-            console.log(msg);
-        });
-        
         
         
     }
 
     /**
      * 準備を
-     * @param name
      */
-    public ready(name:string){
-        this.socket.emit('ready',JSON.stringify({name:name}));
+    public ready(){
+        this.socket.emit('ready');
     }
 
     /**
      * ゲームを終了した合図
      */
-    public finishGame(){
-        this.socket.emit('finishGame');
+    public finishGame(name:string){
+        this.socket.emit('finishGame',name);
     }
 
     /**
@@ -69,20 +66,9 @@ export class Communicator{
      */
     public pushBlock(block:Block){
         console.log("pushBlock");
-        this.socket.emit('verification',JSON.stringify({block:block}))
+        this.socket.emit('verification',block)
     }
 
-
-    
-
-    
-
-
-    
-
-
-
-
-
+   
     
 }
