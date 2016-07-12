@@ -97,6 +97,31 @@ export class TetrisController{
     }
 
     /**
+     * 配列でもらったランキングを表示する
+     * @param rankList
+     */
+    public ranking(rankList){
+        const table = <HTMLTableElement>document.getElementById("table");
+        for(let i in rankList){
+            //tdでランクを表示する
+            let r = document.createElement("tr");
+            let rank  =document.createElement("td");
+            rank.innerHTML = i+1+"";
+            let score = document.createElement("td");
+            score.innerHTML = rankList[i]["score"]
+            let name = document.createElement("td");
+            name.innerHTML = rankList[i]["name"];
+
+            r.appendChild(rank);
+            r.appendChild(name);
+            r.appendChild(score);
+            table.appendChild(r);
+
+        }
+        
+    }
+
+    /**
      * キーをセット
      * @param e
      */
