@@ -4,28 +4,29 @@ import {BlockType} from "./BlockType";
 /**
  * Created by vista on 2016/07/01.
  */
-
-
+/**
+ * 正方形
+ */
 export class Square extends Block{
+    
 
     constructor(){
         super();
     }
+    
+    public reset(){
+        super.reset();
+        this.point.y = 1;
 
-    /**
-     * 四角形の図形セット
-     * @returns {number[][]}
-     */
-    protected createForm():Point[][]{
-        return [[{x:0,y:1},{x:1,y:1},{x:1,y:0}]];
     }
     
-
-
-    /**
-     * 四角形のBlockTypeをセット
-     * @returns {BlockType}
-     */
+    protected createForm():Point[][]{
+        return [[{x:0,y:1},{x:1,y:1},{x:1,y:0}],
+            [{x:0,y:1},{x:1,y:1},{x:1,y:0}],
+            [{x:0,y:1},{x:1,y:1},{x:1,y:0}],
+            [{x:0,y:1},{x:1,y:1},{x:1,y:0}]];
+    }
+    
     protected setBlockType():BlockType{
         return BlockType.Square;
     }
@@ -33,6 +34,7 @@ export class Square extends Block{
     protected createColor():string{
         return "yellow";
     }
+    
 
 
 

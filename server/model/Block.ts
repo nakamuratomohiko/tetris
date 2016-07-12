@@ -12,15 +12,23 @@ export abstract class Block{
     private _point:Point;//支点の位置
     private _date:Date;//着地した時の時間
     private _angle:number;//0:初期,1:右に90度,2:180度,3:左に90度
-    private _name:BlockType;
+    private _blockType:BlockType;
     private _color:string;
 
     constructor(){
         this._form = this.createForm();
-        this._name = this.setBlockType();
+        this._blockType = this.setBlockType();
         this._color = this.createColor();
+        this._point = {x:0,y:0};
     }
 
+    /**
+     * tetrisで戻したいプロパティを初期値に戻す
+     */
+    public  reset(){
+        this._angle = 0;
+    };
+    
     /**
      * カラー
      */
@@ -35,7 +43,12 @@ export abstract class Block{
      * BlockTypeをセットする
      */
     protected abstract setBlockType():BlockType;
-    
+
+    /**
+     * ブロックtypeを返す
+     * @returns {BlockType}
+     */
+    public get blockType():BlockType{return this._blockType;}
     /**
      * 図形の形をセットする
      */
@@ -77,7 +90,9 @@ export abstract class Block{
      * 回転角度セット
      * @param angle{number}
      */
-    public set angle(angle:number){this._angle = angle;}
+    public set angle(angle:number){
+        this._angle = (this._angle + angle) % 4;
+    }
 
     /**
      * 回転角度取得

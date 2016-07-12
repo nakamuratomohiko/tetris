@@ -11,6 +11,12 @@ export class ReverseLBlock extends Block{
         super();
     }
 
+    public reset(){
+        super.reset();
+        this.point.y = 0;
+        
+    }
+    
     protected createColor():string{
         return "lightsteelblue";
 

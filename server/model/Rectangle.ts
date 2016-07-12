@@ -10,6 +10,12 @@ export class Rectangle extends Block{
     constructor(){
         super();
     }
+    
+   public reset(){
+       super.reset();
+        this.point.y = 2;
+
+    }
 
     protected createColor():string{
         return "blue";
