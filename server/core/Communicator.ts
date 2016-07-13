@@ -97,15 +97,18 @@ export class Communicator {
             });
 
             /**
-             * ゲームの終了を受け付ける
+             * ゲームの終了を受け付ける,ランキングを表示する
              */
             client.on('finishGame', function (name) {
-                console.log("name" + name);
-                io.sockets.to(client.id).emit('ranking', [{score: 1000, name: "test"}, {score: 500, name: "asdf"}]);
+                tServer.finishGame(client.id,name)
+                    .then(list =>{
+                        io.sockets.to(client.id).emit('ranking', [{score: 1000, name: "test"}, {score: 500, name: "asdf"}]);
+                    })
+                    .catch(err =>{
+                        io.sockets.to(client.id).emit('Error', err);
 
-
-                io.sockets.to(client.id).emit('Error', "test");
-
+                    });
+                
             });
 
 
