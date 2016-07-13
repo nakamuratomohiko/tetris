@@ -21,9 +21,9 @@ export class DBStore {
      *  ユーザ登録する　登録ができなかったら
      * @param userName {string}
      * @param score {number}
-     * @returns {Promise} resolve成功:true　reject失敗:false
+     * @returns {Promise<void>}
      */
-    public scoreInsert(userName:string) {
+    public scoreInsert(userName:string):Promise<void> {
         const connection = this.connection;
         return new Promise(function (resolve, reject)  {
             connection.connect();
@@ -31,9 +31,9 @@ export class DBStore {
             connection.query("INSERT INTO score(id,name,score) VALUE (null,'"+userName+"','"+score+"');", function (err, rows, fields) {
                 if (err) throw err;
                 if(rows === undefined){
-                    reject(false);
+                    reject("データを保存できませんでした");
                 }else{
-                    resolve(true);
+                    resolve();
                 }
 
             });
@@ -48,12 +48,12 @@ export class DBStore {
 
     /**
      * 名前からUserオブジェクトを取得
-     * @returns {Promise}　成功:[]
+     * @returns {Promise <[]>}
      */
     public getRank(){
         const connection = this.connection;
 
-        return new Promise(function (resolve,reject){
+        return new Promise(function (resolve,reject):Promise<[]>{
 
             connection.connect();
 
@@ -61,7 +61,7 @@ export class DBStore {
                 if (err) throw err;
 
                 if(rows[0] === undefined){
-                    reject();
+                    reject("ランキング取得できませんでした");
                 }else {
                     const list = [];
                     for(let score in rows) {
