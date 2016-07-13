@@ -1,5 +1,6 @@
 import {Reproduction} from "./Reproduction";
 import {Block} from "../model/Block";
+import {Communicator} from "./Communicator";
 /**
  * Created by vista on 2016/07/12.
  */
@@ -7,8 +8,10 @@ import {Block} from "../model/Block";
 export class TetrisServer{
 
     private reproList;
+    private Comm:Communicator;
     
     constructor(){
+       this.Comm = new Communicator(this);
         this.reproList = {};
     }
 
