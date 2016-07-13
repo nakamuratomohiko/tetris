@@ -66,6 +66,9 @@ export class Communicator {
                tServer.disconnect();
             });
 
+            /**
+             * 準備をする、配列を返す通信
+             */
             client.on('ready', function () {
                 
                 tServer.ready(client.id)
