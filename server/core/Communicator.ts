@@ -6,7 +6,6 @@ import * as socketio from "socket.io";
 import * as express from "express";
 import * as http from "http";
 import {BlockType} from "../../model/BlockType";
-import {Reproduction} from "./Reproduction";
 import {TetrisServer} from "./TetrisServer";
 
 /**
@@ -14,8 +13,8 @@ import {TetrisServer} from "./TetrisServer";
  */
 export class Communicator {
     private tServer:TetrisServer;
-    constructor() {
-        this.repo = new Reproduction;
+    constructor(ts:TetrisServer) {
+        this.tServer = ts;
         let app = express();
 
         app.get('/', function (req, res) {
