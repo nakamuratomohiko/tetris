@@ -1,4 +1,5 @@
 import {Reproduction} from "./Reproduction";
+import {Block} from "../model/Block";
 /**
  * Created by vista on 2016/07/12.
  */
@@ -55,6 +56,28 @@ export class TetrisServer{
             }
             resolve(list);
 
+        });
+    }
+
+    /**
+     * 検証
+     * @param id {string}
+     * @param block {Block}
+     * @returns {Promise<number>}
+     */
+    public verid(id:string,block:Block):Promise<number>{
+        return new Promise((resolve,reject) =>{
+            const re = this.repoList[id];
+            if(re == undefined){
+                reject("ページをリロードしてください");
+            }
+
+            if(re.pushBlock(block)){
+
+                resolve(re.score);
+            }else{
+                reject("不正がみうけられました");
+            }
         });
     }
 }
