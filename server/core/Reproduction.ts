@@ -61,14 +61,18 @@ export class Reproduction {
     }
     
     /**
-     * ゲームの終了でデータベースにデータを入れる
+     * ゲームの終了でデータベースにデータを入れる,またランキングを取得する
      * @returns {Promise}
      */
-    public finish(name:string):Promise<void> {
+    public finish(name:string):Promise<[]> {
         return new Promise(function (resolve, reject) {
             this.dbStore.scoreInsert(name,this._score)
-                .then(() => { resolve();})
-                .catch(() => {reject();});
+                .then(() => {})
+                .this.dbStore.getRank()
+                .then((list) =>{
+                    resolve(list);
+                })
+                .catch((err) => {reject(err);});
 
         });
     }
