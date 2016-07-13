@@ -43,16 +43,16 @@ export class TetrisServer{
      * BlockTypeの配列を返す
      * @returns {Promise}
      */
-    public ready(id:string):Promise{
+    public ready(id:string):Promise<BlockType[]>{
         return new Promise((resolve,reject) =>{
             const re  = this.reproList[id];
             if(re === undefined){
-                reject();
+                reject("ページを読み込み直してください");
             }
             this.reproList[id].ready();
             const list = re.ready();
             if(list === undefined){
-                reject();
+                reject("ブロックの読み込みに失敗しました。もう一度準備をおしてください");
             }
             resolve(list);
 
