@@ -64,11 +64,11 @@ export class Reproduction {
      * ゲームの終了でデータベースにデータを入れる
      * @returns {Promise}
      */
-    public finish(name:string,score:number):Promise<void> {
+    public finish(name:string):Promise<void> {
         return new Promise(function (resolve, reject) {
-            this.dbStore.scoreInsert(name,score)
-                .then(res => { resolve();})
-                .catch(err => {reject();});
+            this.dbStore.scoreInsert(name,this._score)
+                .then(() => { resolve();})
+                .catch(() => {reject();});
 
         });
     }
