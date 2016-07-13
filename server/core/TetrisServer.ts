@@ -80,4 +80,26 @@ export class TetrisServer{
             }
         });
     }
+
+    /**
+     * ゲームの終了処理
+     * @param id
+     * @returns {Promise<[]>}
+     */
+    public finishGame(id:string,name:string):Promise<[]>{
+        return new Promise((resolve,reject) =>{
+            const re = this.reproList[id];
+            if(re == undefined){
+                reject("プレイデータが消えました。ページをリロードしてください");
+            }else{
+                re.finish(name)
+                    .then((list) => {
+                        resolve(list);
+                    })
+                    .catch((err) =>{
+                        reject(err);
+                    });
+            }
+        });
+    }
 }
