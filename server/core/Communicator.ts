@@ -5,8 +5,9 @@ import * as fs from "fs";
 import * as socketio from "socket.io";
 import * as express from "express";
 import * as http from "http";
-import {BlockType} from "../../model/BlockType";
+import {BlockType} from "../model/BlockType";
 import {TetrisServer} from "./TetrisServer";
+import {Block} from "../model/Block";
 
 /**
  * 通信担当クラス
@@ -49,8 +50,9 @@ export class Communicator {
         )
         let server = http.createServer(app);
         let io = socketio.listen(server);
-        let tServer = this.tServer;
+
         io.sockets.on('connection', function (client) {
+            let tServer = this.tServer;
             client.join(client.id);
             //初めの接続でインスタンス生成
             tServer.connection()
@@ -58,7 +60,7 @@ export class Communicator {
 
                 })
                 .catch(()=>{
-                    io.sockets.to(client.to).emit('Error',"ページをリロードしてください");
+                    io.sockets.to(client.id).emit('Error',"ページをリロードしてください");
                 });
 
             client.on('disconnect',function(){
@@ -85,14 +87,13 @@ export class Communicator {
              * ブロックの検証受け付ける
              */
             client.on('verification', function (block:Block) {
-                tServer.verid(id,block)
+                tServer.verid(client.id,block)
                     .then((score)=>{
                         io.sockets.to(client.id).emit('notifyScore',score);
                     })
                     .catch((msg:string)=>{
                        io.sockets.to(client.id).emit('Error',msg);
                     });
-                io.sockets.to(client.id).emit('verification', msg);
             });
 
             /**
