@@ -73,7 +73,7 @@ export class Communicator {
                         io.sockets.to(client.id).emit('ready', list);
                     })
                     .catch(err =>{
-                        io.sockets.to(client.id).emit('Error',"リロードしなおしてください");
+                        io.sockets.to(client.id).emit('Error',err);
                     });
                     
 
