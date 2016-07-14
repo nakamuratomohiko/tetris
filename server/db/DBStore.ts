@@ -4,7 +4,6 @@
 
 import * as mysql from "mysql";
 import Promise = require("any-promise/index");
-import {User} from "../model/User";
 import {config} from "./config";
 import * as fs from "fs";
 
@@ -23,7 +22,7 @@ export class DBStore {
      * @param score {number}
      * @returns {Promise<void>}
      */
-    public scoreInsert(userName:string):Promise<void> {
+    public scoreInsert(userName:string,score:number):Promise<void> {
         const connection = this.connection;
         return new Promise<void>(function (resolve, reject)  {
             connection.connect();
