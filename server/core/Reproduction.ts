@@ -64,8 +64,8 @@ export class Reproduction {
      * ゲームの終了でデータベースにデータを入れる,またランキングを取得する
      * @returns {Promise}
      */
-    public finish(name:string):Promise<[]> {
-        return new Promise(function (resolve, reject) {
+    public finish(name:string):Promise<Object[]> {
+        return new Promise<Object[]>(function (resolve, reject) {
             this.dbStore.scoreInsert(name,this._score)
                 .then(() => {})
                 .this.dbStore.getRank()
