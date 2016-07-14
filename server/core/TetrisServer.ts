@@ -23,12 +23,13 @@ export class TetrisServer{
      */
     public connection(id:string):Promise<void>{
         return new Promise<void>((resolve,reject) => {
-            
             this.reproList[id] = new Reproduction();
-            if(this.reproList[id] != undefined){
-                resolve();
+            if(this.reproList[id] === undefined){
+                reject();
+
             }
-            reject();
+            resolve();
+
 
         });
     }
@@ -38,7 +39,7 @@ export class TetrisServer{
      */
     public disconnect(id:string){
         if(this.reproList[id] != undefined){
-            this.reproList[id].delete();
+          delete  this.reproList[id];
 
         }
     }
@@ -49,11 +50,10 @@ export class TetrisServer{
      */
     public ready(id:string):Promise<BlockType[]>{
         return new Promise<BlockType[]>((resolve,reject) =>{
-            const re  = this.reproList[id];
-            if(re === undefined){
+            if(this.reproList[id] === undefined){
                 reject("ページを読み込み直してください");
             }
-            const list = re.ready();
+            const list = this.reproList[id].ready();
             if(list === undefined){
                 reject("ブロックの読み込みに失敗しました。もう一度準備をおしてください");
             }
