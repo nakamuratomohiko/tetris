@@ -34,7 +34,7 @@ export class Communicator {
         );
 
         app.get('/app', function (req, res) {
-                fs.readFile('./../../dist/app.js',
+                fs.readFile('../../client/dist/app.js',
                     function (err, data) {
                         if (err) {
                             res.writeHead(500);
