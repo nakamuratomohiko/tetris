@@ -47,24 +47,23 @@ export class Communicator {
                     });
 
             }
-        )
+        );
         let server = http.createServer(app);
         let io = socketio.listen(server);
+        let tServer:TetrisServer = this.tServer;
 
         io.sockets.on('connection', function (client) {
-            let tServer = this.tServer;
             client.join(client.id);
             //初めの接続でインスタンス生成
-            tServer.connection()
+            tServer.connection(client.id)
                 .then(()=>{
-
                 })
                 .catch(()=>{
                     io.sockets.to(client.id).emit('Error',"ページをリロードしてください");
                 });
 
             client.on('disconnect',function(){
-               tServer.disconnect();
+               tServer.disconnect(client.id);
             });
 
             /**
@@ -102,7 +101,7 @@ export class Communicator {
             client.on('finishGame', function (name) {
                 tServer.finishGame(client.id,name)
                     .then(list =>{
-                        io.sockets.to(client.id).emit('ranking', [{score: 1000, name: "test"}, {score: 500, name: "asdf"}]);
+                        io.sockets.to(client.id).emit('ranking', list);
                     })
                     .catch(err =>{
                         io.sockets.to(client.id).emit('Error', err);
