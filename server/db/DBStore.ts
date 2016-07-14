@@ -25,7 +25,7 @@ export class DBStore {
      */
     public scoreInsert(userName:string):Promise<void> {
         const connection = this.connection;
-        return new Promise(function (resolve, reject)  {
+        return new Promise<void>(function (resolve, reject)  {
             connection.connect();
 
             connection.query("INSERT INTO score(id,name,score) VALUE (null,'"+userName+"','"+score+"');", function (err, rows, fields) {
@@ -50,10 +50,10 @@ export class DBStore {
      * 名前からUserオブジェクトを取得
      * @returns {Promise <[]>}
      */
-    public getRank(){
+    public getRank():Promise<Object[]>{
         const connection = this.connection;
 
-        return new Promise(function (resolve,reject):Promise<[]>{
+        return new Promise<Object[]>(function (resolve,reject){
 
             connection.connect();
 
