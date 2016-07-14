@@ -19,7 +19,7 @@ export class Communicator {
         let app = express();
 
         app.get('/', function (req, res) {
-                fs.readFile(/*__dirname +*/ './../index.html',
+                fs.readFile('../../client/core/index.html',
                     function (err, data) {
                         if (err) {
                             res.writeHead(500);
