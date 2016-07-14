@@ -1,6 +1,5 @@
 import {Block} from "../model/Block";
 import {Point} from "../model/Point";
-import {User} from "../model/User";
 import {BlockType} from "../model/BlockType";
 import Promise = require("any-promise/index");
 import {DBStore} from "../db/DBStore";
