@@ -12,10 +12,16 @@ export class DBStore {
     /**
      * mysqlへの接続する設定が記述されたファイルを読み込む
      */
-    private config:config= JSON.parse(fs.readFileSync("./config.json").toString());
+    private config:config;
 
-    private connection = mysql.createConnection(this.config);
+    private connection;
 
+
+    constructor(){
+        this.config =JSON.parse(fs.readFileSync("./../db/config.json").toString());
+        this.connection =  mysql.createConnection(this.config);
+    }
+    
     /**
      *  ユーザ登録する　登録ができなかったら
      * @param userName {string}
