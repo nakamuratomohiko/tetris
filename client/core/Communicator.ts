@@ -1,5 +1,5 @@
 import * as io from "socket.io-client";
-import {Block} from "../../cliant/model/Block";
+import {Block} from "../model/Block";
 import {TetrisController} from "./TetrisController";
 import {BlockType} from "../model/BlockType";
 
