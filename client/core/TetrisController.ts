@@ -1,6 +1,6 @@
 import {Communicator} from "./Communicator";
 import {Tetris} from "./Tetris";
-import {BlockType} from "../../cliant/model/BlockType";
+import {BlockType} from "../model/BlockType";
 import {Block} from "../model/Block";
 import {User} from "../model/User";
 /**
