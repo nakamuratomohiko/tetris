@@ -16,7 +16,7 @@ export class BlockFactory{
     private pool:Block[];
 
     //Singletonパターン
-    private static  singleton:BlockFactory = new BlockFactory();
+    private static  singleton:BlockFactory ;
 
     /**
      * コンストラクタ
@@ -44,6 +44,9 @@ export class BlockFactory{
      * @returns {BlockFactory}
      */
     public static getInstance():BlockFactory {
+        if(this.singleton === undefined){
+            this.singleton = new BlockFactory();
+        }
         return this.singleton;
     }
 

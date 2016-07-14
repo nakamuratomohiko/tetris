@@ -41,6 +41,6 @@ typings
 *.js
 *.map
 test.*
-/cliant/core/test/
-/cliant/core/server.ts
-/cliant/dist/
+/client/core/test/
+/client/core/server.ts
+/client/dist/

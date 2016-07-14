@@ -20,90 +20,55 @@ export class DBStore {
     /**
      *  ユーザ登録する　登録ができなかったら
      * @param userName {string}
-     * @param password {string}
-     * @returns {Promise} resolve成功:true　reject失敗:false
+     * @param score {number}
+     * @returns {Promise<void>}
      */
-    public userInsert(userName:string,password:string) {
+    public scoreInsert(userName:string):Promise<void> {
         const connection = this.connection;
         return new Promise(function (resolve, reject)  {
             connection.connect();
 
-            connection.query("INSERT INTO user(id,name,pass) VALUE (null,'"+userName+"','"+password+"');", function (err, rows, fields) {
+            connection.query("INSERT INTO score(id,name,score) VALUE (null,'"+userName+"','"+score+"');", function (err, rows, fields) {
                 if (err) throw err;
                 if(rows === undefined){
-                    reject(false);
-                }else{
-                    resolve(true);
-                }
-
-            });
-
-            connection.end();
-
-
-        });
-
-
-    }
-
-    /**
-     * 最高scoreの更新 
-     * @param user
-     * @returns {Promise} 
-     */
-    public scoreUpdate(user:User){
-        const connection = this.connection;
-
-        return new Promise(function (resolve,reject){
-            connection.connect();
-
-            connection.query("UPDATE user SET score = "+user.maxScore+" WHERE name = '"+ user.name +"' AND score < "+user.maxScore+"", function (err, rows, fields) {
-                if (err) throw err;
-
-                console.log('The solution is: ', rows);
-                if(rows.changedRows == 0){
-                    reject();
+                    reject("データを保存できませんでした");
                 }else{
                     resolve();
                 }
 
-
             });
 
             connection.end();
+
 
         });
 
 
     }
 
-
-
-
-
     /**
      * 名前からUserオブジェクトを取得
-     * @param userName
-     * @returns {Promise}　成功:Userクラス
+     * @returns {Promise <[]>}
      */
-    public getUser(userName:string){
+    public getRank(){
         const connection = this.connection;
 
-        return new Promise(function (resolve,reject){
+        return new Promise(function (resolve,reject):Promise<[]>{
 
             connection.connect();
 
-            connection.query("SELECT u.name as name ,r.score as score FROM user u,rank r WHERE name = '"+userName+"' AND u.id = r.id", function (err, rows, fields) {
+            connection.query("SELECT * FROM `score` ORDER BY score DESC LIMIT 20", function (err, rows, fields) {
                 if (err) throw err;
 
-                console.log('The solution is: ', rows[0]);
                 if(rows[0] === undefined){
-                    reject();
+                    reject("ランキング取得できませんでした");
                 }else {
-                    const user = new User();
-                    user.name = userName;
-                    user.maxScore = rows[0].score;
-                    resolve(user);
+                    const list = [];
+                    for(let score in rows) {
+                       list.push(rows[score]);
+                    }
+                    resolve(list);
+
                 }
                 
             });
