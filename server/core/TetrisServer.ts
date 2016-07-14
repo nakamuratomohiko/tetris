@@ -1,13 +1,14 @@
 import {Reproduction} from "./Reproduction";
 import {Block} from "../model/Block";
 import {Communicator} from "./Communicator";
+import {BlockType} from "../model/BlockType";
 /**
  * Created by vista on 2016/07/12.
  */
 
 export class TetrisServer{
 
-    private reproList;
+    private reproList:{};
     private Comm:Communicator;
     
     constructor(){
@@ -20,11 +21,11 @@ export class TetrisServer{
      * @param id
      * @returns {Promise}
      */
-    public connection(id:strig):Promise{
-        return new Promise((resolve,reject) => {
+    public connection(id:string):Promise<void>{
+        return new Promise<void>((resolve,reject) => {
             
             this.reproList[id] = new Reproduction();
-            if(this.repoList[id] != undefined){
+            if(this.reproList[id] != undefined){
                 resolve();
             }
             reject();
@@ -35,7 +36,7 @@ export class TetrisServer{
     /**
      * 通信していた人のインスタンスを削除
      */
-    public disconnect(){
+    public disconnect(id:string){
         if(this.reproList[id] != undefined){
             this.reproList[id].delete();
 
@@ -47,12 +48,11 @@ export class TetrisServer{
      * @returns {Promise}
      */
     public ready(id:string):Promise<BlockType[]>{
-        return new Promise((resolve,reject) =>{
+        return new Promise<BlockType[]>((resolve,reject) =>{
             const re  = this.reproList[id];
             if(re === undefined){
                 reject("ページを読み込み直してください");
             }
-            this.reproList[id].ready();
             const list = re.ready();
             if(list === undefined){
                 reject("ブロックの読み込みに失敗しました。もう一度準備をおしてください");
@@ -69,8 +69,8 @@ export class TetrisServer{
      * @returns {Promise<number>}
      */
     public verid(id:string,block:Block):Promise<number>{
-        return new Promise((resolve,reject) =>{
-            const re = this.repoList[id];
+        return new Promise<number>((resolve,reject) =>{
+            const re = this.reproList[id];
             if(re == undefined){
                 reject("ページをリロードしてください");
             }
@@ -89,8 +89,8 @@ export class TetrisServer{
      * @param id
      * @returns {Promise<[]>}
      */
-    public finishGame(id:string,name:string):Promise<[]>{
-        return new Promise((resolve,reject) =>{
+    public finishGame(id:string,name:string):Promise<Object[]>{
+        return new Promise<Object[]>((resolve,reject) =>{
             const re = this.reproList[id];
             if(re == undefined){
                 reject("プレイデータが消えました。ページをリロードしてください");
