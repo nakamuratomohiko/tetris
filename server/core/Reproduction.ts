@@ -4,7 +4,6 @@ import {BlockType} from "../model/BlockType";
 import Promise = require("any-promise/index");
 import {DBStore} from "../db/DBStore";
 import {BlockFactory} from "../model/BlockFactory";
-import {Board} from "../model/Board";
 import {Generator} from "./Generator";
 /**
  * Created by vista on 2016/07/05.
@@ -14,7 +13,7 @@ import {Generator} from "./Generator";
 export class Reproduction {
 
     private _score:number;
-    private result:Board[][];
+    private result:number[][];
     private blockList:BlockType[];
     private _startTime:Date;
     private dbStore:DBStore;
@@ -28,6 +27,12 @@ export class Reproduction {
         this.dbStore = new DBStore();
         this.blockFactry = BlockFactory.getInstance();
         this.genrator = Generator.getInstance();
+        this.result = [];
+        for(let i = 0;i < 10;i++){
+            this.result[i] = [];
+        }
+        this._score = 0;
+
     }
 
     public set startTime(startTime:Date){
@@ -81,7 +86,7 @@ export class Reproduction {
      * @param block
      * @returns {boolean}
      */
-    public pushBlock(block:Block):boolean{
+    public pushBlock(block):boolean{
         if( this.verification(block) ){
             this.change(1);
             this.calculation();
@@ -99,37 +104,38 @@ export class Reproduction {
      * @param block
      * @returns {boolean}
      */
-    private verification(block:Block):boolean {
-
+    private verification(block):boolean {
         //置いた時間が終了時間を超えていた場合不正とみなす。
-        if (this.endTime < block.date) {return false;}
-
+        // if (this.endTime < block.date) {return false;}
         //配列から引っ張ってきて、引数と比較
-        if(this.blockList.pop() == block.blockType){
-            const px:number = block.point.x;
-            const py:number = block.point.y;
-            const tBlock = this.blockFactry.getBlock(block.blockType);
-            if(tBlock === undefined){return false}
+        if(this.blockList.pop() == block._blockType){
+            const px:number = block._point.x;
+            const py:number = block._point.y;
+            const tBlock = this.blockFactry.getBlock(block._blockType);
+            if(tBlock === undefined){;return false;}
             //ここで検証する
-            if (this.result[px][py].type == 1 || this.result[px][py].type == -1) { return false;}
-            for (let i of tBlock.form[block.angle]) {
+
+            if (this.result[px][py] == 0) {
+                this.result[px][py] = -2;
+            }else{
+                return false;
+            }let c = 0;
+            for (let i of tBlock.form[block._angle]) {
                 let x = i.x;
                 let y = i.y;
-
-                if (this.result[px + x][py + y].type == 1 ||
-                        this.result[px + x][py + y].type == -1) {
+                if (this.result[px + x][py + y] == 0) {
+                    //仮で入れる
+                    this.result[px + x][py + y] = -2;
+                } else {
                     //失敗
                     return false;
-                } else {
-                    //仮で入れる
-                    this.result[px + x][py + y].type = -2;
                 }
 
 
             }
-
             return true;    
         }//ここで引数のブロックのタイプから手元で同じものを作成してテストを始める
+        return false;
         
     }
 
@@ -139,9 +145,9 @@ export class Reproduction {
      */
     private change(num:number) {
         for (let i:number = 0; i < this.result[0].length; i++) {
-            for (let j = 0; this.result.length; j++) {
-                if (this.result[j][i].type == -2) {
-                    this.result[j][i].type = num
+            for (let j = 0; j < this.result.length; j++) {
+                if (this.result[j][i] == -2) {
+                    this.result[j][i] = num
                 }
             }
         }
@@ -149,7 +155,7 @@ export class Reproduction {
 
 
     /**
-     * 点数を計算と計算したレーンを消す
+     * 点数を計算
      */
     private calculation(){
 
@@ -159,19 +165,20 @@ export class Reproduction {
         for(let i:number = 0;i < this.result[0].length;i++){
             let count = 0;
             //左から右に
-            for(let j:number = 0; j < this.result.length;j++){
+            for(let j:number = 1; j < this.result.length -1 ;j++){
 
-                if(this.result[j][i].type==1){
+                if(this.result[j][i]==1){
                     count += 1;
                 }
             }
-            if (count == this.result.length) {
+            if (count == this.result.length -2) {
                 lane += 1;
             }
 
         }
 
-        this.score = this.score + (lane * 10);
+
+        this._score = this._score + (lane * 10);
     }
 
     /**
@@ -181,13 +188,13 @@ export class Reproduction {
         for (let x = 0; x < this.cols; x++) {
             for (let y = 0; y < this.rows; y++) {
                 if (x == 0 || x == this.cols - 1) {
-                    this.result[x][y] = {type: -1, color: ""};
+                    this.result[x][y] = -1;
 
                 } else if (y == (this.rows - 1) || y == 0) {
-                    this.result[x][y] = {type: -1, color: ""};
+                    this.result[x][y] = -1;
                     
                 } else {
-                    this.result[x][y] = {type: 0, color: ""};
+                    this.result[x][y] = 0;
                 }
 
             }
@@ -204,7 +211,7 @@ export class Reproduction {
         for (let y = 5; y < this.rows -1 ; y++) {
             let rowLine = true;
             for (let x = 0; x < this.cols ; x++) {
-                if (this.result[x][y].type == 0) {
+                if (this.result[x][y] == 0) {
                     rowLine = false;
                     break;
                 }
@@ -214,6 +221,9 @@ export class Reproduction {
                 for (let yy = y; yy > 5; yy--) {
                     for (let x = 1; x < this.cols - 1; x++) {
                         this.result[x][yy] = this.result[x][yy - 1];
+                        for(let z = 1; z < this.cols-1;z++){
+                            this.result[z][5] = 0;
+                        }
                     }
                 }
 
