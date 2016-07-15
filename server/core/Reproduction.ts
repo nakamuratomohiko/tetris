@@ -68,15 +68,18 @@ export class Reproduction {
      * ゲームの終了でデータベースにデータを入れる,またランキングを取得する
      * @returns {Promise}
      */
-    public finish(name:string):Promise<Object[]> {
+    public finish(name:string):Promise<Object> {
+        const db = this.dbStore;
+        const score = this._score;
         return new Promise<Object[]>(function (resolve, reject) {
-            this.dbStore.scoreInsert(name,this._score)
-                .then(() => {})
-                .this.dbStore.getRank()
-                .then((list) =>{
+            db.scoreInsert(name,score)
+                .then(()=>db.getRank())
+                .then((list:Object[]) => {
                     resolve(list);
                 })
-                .catch((err) => {reject(err);});
+                .catch((err) => {
+                    reject(err);
+                });
 
         });
     }
@@ -221,10 +224,12 @@ export class Reproduction {
                 for (let yy = y; yy > 5; yy--) {
                     for (let x = 1; x < this.cols - 1; x++) {
                         this.result[x][yy] = this.result[x][yy - 1];
-                        for(let z = 1; z < this.cols-1;z++){
-                            this.result[z][5] = 0;
-                        }
+                       
                     }
+                }
+
+                for(let z = 1; z < this.cols-1;z++){
+                    this.result[z][5] = 0;
                 }
 
             }
