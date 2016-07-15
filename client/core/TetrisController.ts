@@ -80,7 +80,7 @@ export class TetrisController{
      * 不正な操作のときにたたかれる
      * @param msg
      */
-    public Error(msg){
+    public Error(msg:string){
         let p = document.getElementById("error");
         p.innerHTML = msg;
         this.tetris.invalidOperation();
@@ -155,7 +155,7 @@ export class TetrisController{
         switch (key){
 
             case 'left':
-                this.tetris.tick(-1);
+                this.tetris.tick(-1,0,0);
                 break;
 
             case 'rotate':
