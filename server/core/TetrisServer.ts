@@ -2,9 +2,12 @@ import {Reproduction} from "./Reproduction";
 import {Block} from "../model/Block";
 import {Communicator} from "./Communicator";
 import {BlockType} from "../model/BlockType";
+import * as sms from "source-map-support";
 /**
  * Created by vista on 2016/07/12.
  */
+
+sms.install();
 
 export class TetrisServer{
 
@@ -23,12 +26,13 @@ export class TetrisServer{
      */
     public connection(id:string):Promise<void>{
         return new Promise<void>((resolve,reject) => {
+            
             this.reproList[id] = new Reproduction();
             if(this.reproList[id] === undefined){
                 reject();
-
+            } else {
+                resolve();
             }
-            resolve();
 
 
         });
@@ -71,16 +75,17 @@ export class TetrisServer{
     public verid(id:string,block:Block):Promise<number>{
         return new Promise<number>((resolve,reject) =>{
             const re = this.reproList[id];
-            if(re == undefined){
+            if(re === undefined){
                 reject("ページをリロードしてください");
-            }
-
-            if(re.pushBlock(block)){
-
-                resolve(re.score);
             }else{
-                reject("不正がみうけられました");
+                if(re.pushBlock(block)){
+                    resolve(re.score);
+                }else{
+                    reject("不正がみうけられました");
+                }
             }
+
+
         });
     }
 
