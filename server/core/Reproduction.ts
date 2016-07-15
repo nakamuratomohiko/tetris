@@ -31,7 +31,6 @@ export class Reproduction {
         for(let i = 0;i < 10;i++){
             this.result[i] = [];
         }
-        this._score = 0;
 
     }
 
@@ -59,6 +58,7 @@ export class Reproduction {
      * 準備、リセット
      */
     public ready():BlockType[]{
+        this._score = 0;
         this.init();
         this.blockList = this.genrator.createList();
         return this.blockList;
