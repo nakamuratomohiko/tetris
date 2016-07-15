@@ -6,6 +6,7 @@ import {Rectangle} from "./Rectangle";
 import {ZBlock} from "./ZBlock";
 import {ReverseZBlock} from "./ReverseZBlock";
 import {Square} from "./Square";
+import {Triangle} from "./Triangle";
 /**
  * Created by vista on 2016/07/07.
  */
@@ -35,6 +36,8 @@ export class BlockFactory{
         this.pool[zb.blockType] = zb;
         const rzb = new ReverseZBlock();
         this.pool[rzb.blockType] = rzb;
+        const tr = new Triangle();
+        this.pool[tr.blockType] = tr;
         
 
     }

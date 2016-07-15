@@ -9,7 +9,8 @@ export enum BlockType{
     LBlock,
     ReverseLBlock,
     ZBlock,
-    ReverseZBlock
+    ReverseZBlock,
+    Triangle
 
 
 }
