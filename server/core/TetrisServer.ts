@@ -2,9 +2,12 @@ import {Reproduction} from "./Reproduction";
 import {Block} from "../model/Block";
 import {Communicator} from "./Communicator";
 import {BlockType} from "../model/BlockType";
+import * as sms from "source-map-support";
 /**
  * Created by vista on 2016/07/12.
  */
+
+sms.install();
 
 export class TetrisServer{
 
@@ -25,10 +28,12 @@ export class TetrisServer{
         return new Promise<void>((resolve,reject) => {
             
             this.reproList[id] = new Reproduction();
-            if(this.reproList[id] != undefined){
+            if(this.reproList[id] === undefined){
+                reject();
+            } else {
                 resolve();
             }
-            reject();
+
 
         });
     }
@@ -38,7 +43,7 @@ export class TetrisServer{
      */
     public disconnect(id:string){
         if(this.reproList[id] != undefined){
-            this.reproList[id].delete();
+          delete  this.reproList[id];
 
         }
     }
@@ -49,11 +54,10 @@ export class TetrisServer{
      */
     public ready(id:string):Promise<BlockType[]>{
         return new Promise<BlockType[]>((resolve,reject) =>{
-            const re  = this.reproList[id];
-            if(re === undefined){
+            if(this.reproList[id] === undefined){
                 reject("ページを読み込み直してください");
             }
-            const list = re.ready();
+            const list = this.reproList[id].ready();
             if(list === undefined){
                 reject("ブロックの読み込みに失敗しました。もう一度準備をおしてください");
             }
@@ -71,16 +75,17 @@ export class TetrisServer{
     public verid(id:string,block:Block):Promise<number>{
         return new Promise<number>((resolve,reject) =>{
             const re = this.reproList[id];
-            if(re == undefined){
+            if(re === undefined){
                 reject("ページをリロードしてください");
-            }
-
-            if(re.pushBlock(block)){
-
-                resolve(re.score);
             }else{
-                reject("不正がみうけられました");
+                if(re.pushBlock(block)){
+                    resolve(re.score);
+                }else{
+                    reject("不正がみうけられました");
+                }
             }
+
+
         });
     }
 
