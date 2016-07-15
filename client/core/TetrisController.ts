@@ -21,6 +21,9 @@ export class TetrisController{
         this.ready();
         document.getElementById("refresh").onclick = ()=> this.ready();
         document.getElementById("start").onclick = ()=>this.start();
+        const e = <HTMLInputElement>document.getElementById("error");
+        e.innerHTML = "名前は先にいれてください";
+
 
     }
 
@@ -32,13 +35,16 @@ export class TetrisController{
         const s = <HTMLInputElement>document.getElementById("score");
         s.innerHTML = "";
         const e = <HTMLInputElement>document.getElementById("error");
-        e.innerHTML = "";
+
         const a = <HTMLInputElement>document.getElementById("start");
         const name:HTMLInputElement = <HTMLInputElement>document.getElementById("name");
-        if(name.value  == ""){
-            a.disabled = true;
-            e.innerHTML = "名前を入れてください!";
+        a.disabled = true;
+        if(name.value  != ""){
+            e.innerHTML = "";
             this.commu.ready();
+        }else{
+            e.innerHTML = "名前は先にいれてください";
+
         }
 
     }
