@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TETRISDEMO</title>
+    <style>
+
+        table {
+            border-color: black;
+            border-width: 1px;
+            border-style: solid;
+            witdh: 200px;
+
+        }
+
+        th{
+
+            border-color: black;
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        td{
+            border-color: black;
+            border-width: 1px;
+            border-style: solid;
+
+        }
+        #left {
+            float: left;
+        }
+        #error{
+            color:#ff0c17;
+        }
+        #right{
+            float:none;
+        }
+
+    </style>
+</head>
+<body>
+<div id="left">
+    <label form="name">Name:</label>
+    <input id="name" type="text" maxlength="10" placeholder="名前をいれてください"/>
+    <input id="refresh" type="button" value="準備"/>
+    <input id="start" type="button" value="スタート" disabled="true"/>
+    <br>
+    <label form="score">得点:</label>
+    <h2 id="score"></h2>
+
+    <table id="table">
+        <tr><th>rank</th><th>name</th><th>score</th></tr>
+    </table>
+
+
+    <h1 id="error"></h1>
+</div>
+<div id="right" >
+    <canvas id="canvas" width="400" height="800"></canvas>
+    <script src="app"></script>
+</div>
+</body>
+</html>
