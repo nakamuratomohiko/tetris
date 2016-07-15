@@ -71,7 +71,7 @@ export class Tetris {
         this.render = new Render(this.result);
         this.newBlock();
         this._lose = false;
-        this.interval = setInterval(()=>this.tick(), 250);
+        this.interval = setInterval(()=>this.tick(), 400);
     }
 
     /**
@@ -233,6 +233,10 @@ export class Tetris {
                     for (let x = 1; x < this.cols - 1; x++) {
                         this.result[x][yy] = this.result[x][yy - 1];
                     }
+
+                }
+                for(let z = 1 ; z < this.cols -1; z++){
+                    this.result[z][5] = {type:0,color:"white"};
                 }
 
             }

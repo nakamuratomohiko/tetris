@@ -34,8 +34,12 @@ export class TetrisController{
         const e = <HTMLInputElement>document.getElementById("error");
         e.innerHTML = "";
         const a = <HTMLInputElement>document.getElementById("start");
-        a.disabled = true;
-        this.commu.ready();
+        const name:HTMLInputElement = <HTMLInputElement>document.getElementById("name");
+        if(name.value  == ""){
+            a.disabled = true;
+            e.innerHTML = "名前を入れてください!";
+            this.commu.ready();
+        }
 
     }
 
@@ -54,6 +58,8 @@ export class TetrisController{
      * ClientのTetrisを動かす
      */
     public start(){
+        const a = <HTMLInputElement>document.getElementById("start");
+        a.disabled = true;
         this.tetris.newGame();
     }
 
@@ -102,11 +108,17 @@ export class TetrisController{
      */
     public ranking(rankList){
         const table = <HTMLTableElement>document.getElementById("table");
+        const s =  table.rows.length;
+        for( let l = 1;l < s; l++){
+            table.deleteRow(1);
+        }
+        let ranking = 0;
         for(let i in rankList){
+            ranking += 1;
             //tdでランクを表示する
             let r = document.createElement("tr");
             let rank  =document.createElement("td");
-            rank.innerHTML = i+1+"";
+            rank.innerHTML = ranking+"";
             let score = document.createElement("td");
             score.innerHTML = rankList[i]["score"]
             let name = document.createElement("td");

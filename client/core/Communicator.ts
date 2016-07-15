@@ -17,11 +17,8 @@ export class Communicator{
     constructor(tCon:TetrisController){
         this.tCon = tCon;
         const tc = this.tCon;
-        this.socket = io.connect('http://localhost:8080');
-        /**
-         * 現在の通信のIDを設定
-         */
-        this.socket.on('connection',function(){});
+        this.socket = io.connect(window.location.href);
+      
         /**
          * BlockList:BlockType[]を送ってくる
          */
@@ -72,7 +69,6 @@ export class Communicator{
      * @param block {Block}
      */
     public pushBlock(block:Block){
-        console.log("pushBlock");
         this.socket.emit('verification',block)
     }
 
