@@ -34,8 +34,12 @@ export class TetrisController{
         const e = <HTMLInputElement>document.getElementById("error");
         e.innerHTML = "";
         const a = <HTMLInputElement>document.getElementById("start");
-        a.disabled = true;
-        this.commu.ready();
+        const name:HTMLInputElement = <HTMLInputElement>document.getElementById("name");
+        if(name.value  == ""){
+            a.disabled = true;
+            e.innerHTML = "名前を入れてください!";
+            this.commu.ready();
+        }
 
     }
 
