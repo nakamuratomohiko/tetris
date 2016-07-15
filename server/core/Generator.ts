@@ -17,7 +17,8 @@ export class Generator{
         BlockType.ReverseLBlock,
         BlockType.ReverseZBlock,
         BlockType.Square,
-        BlockType.ZBlock
+        BlockType.ZBlock,
+        BlockType.Triangle
     ];
     
     constructor(){
@@ -42,8 +43,8 @@ export class Generator{
     public createList():BlockType[]{
         let result:BlockType[] = [];
 
-        for(let i:number = 0; i < 100;i++){
-            let ram:number = Math.floor(Math.random()*100) % 6;
+        for(let i:number = 0; i < 1000;i++){
+            let ram:number = Math.floor(Math.random()*100) % 7;
             result[i]= this._ramBlock[ram]
         }
         return result;
