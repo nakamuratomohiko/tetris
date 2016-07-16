@@ -37,7 +37,7 @@ export class Render{
         this.ctx.clearRect(0,0,this.size*this.cols,this.size * this.rows);
         this.ctx.strokeStyle = 'black';
 
-        for(let x = 0; x < this.cols+this.next; x++){
+        for(let x = 0; x < this.cols+this.next + 1; x++){
             for(let y = 0; y < this.rows; y++){
 
                 // if(this.result[x][y].type != 0){
