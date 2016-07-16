@@ -4,17 +4,20 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "fs": "^0.0.2",
+    "express": "^4.14.0",
+    "fs": "0.0.2",
     "http": "0.0.0",
+    "mysql": "^2.11.1",
     "serve-static": "^1.11.1",
-    "source-map-support": "^0.4.1",
+    "socket.io": "^1.4.8",
+    "socket.io-client": "^1.4.8",
+    "source-map-support": "^0.4.2",
     "typings": "^1.3.1",
     "webpack-dev-server": "^1.14.1"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"node ./server/core/index.js"
+    "start": "node ./server/core/index.js"
   },
   "repository": {
     "type": "git",
