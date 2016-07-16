@@ -14,6 +14,7 @@ export class Render{
     private rows:number = 20;//縦分割個数
     private result:Board[][];
     private block:Block;//操作しているBlock
+    private next:number = 4;//nextBlockを表示する横領域
 
     constructor(result:Board[][]){
         this.result = result;
@@ -36,7 +37,7 @@ export class Render{
         this.ctx.clearRect(0,0,this.size*this.cols,this.size * this.rows);
         this.ctx.strokeStyle = 'black';
 
-        for(let x = 0; x < this.cols; x++){
+        for(let x = 0; x < this.cols+this.next; x++){
             for(let y = 0; y < this.rows; y++){
 
                 // if(this.result[x][y].type != 0){
@@ -60,6 +61,8 @@ export class Render{
             }
         }
     }
+
+    
 
     /**
      *  １ブロックを書く
