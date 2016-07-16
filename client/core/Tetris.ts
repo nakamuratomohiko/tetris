@@ -17,6 +17,7 @@ export class Tetris {
     private blockList:BlockType[];
     private cols:number = 10;//横
     private rows:number = 20;//縦
+    private next:number = 4;//nextブロックが入るために広げる横領域
     private result:Board[][];
     private _lose:boolean;
     private interval;
