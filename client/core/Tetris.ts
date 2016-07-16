@@ -91,26 +91,47 @@ export class Tetris {
             this.render.render();
 
         } else {//何かあったとき
+            if(rotate != 0){
+                if(this.valid(1,0,1)){//右に動ける
+                    this.block.point.x += 1;
+                    this.block.angle = 1;
 
-            if (this.valid(0, 1)) {
+                }else if(this.valid(2,0,1) && this.block.point.x < this.cols -2 ){
+                    this.block.point.x += 2;
+                    this.block.angle = 1;
+
+                }else if(this.valid(-1,0,1)){
+                    this.block.point.x += -1;
+                    this.block.angle = 1;
+
+                }else if(this.valid(-2,0,1) && this.block.point.x > 2){
+                    this.block.point.x += -2;
+                    this.block.angle = 1;
+                }
                 this.render.render();
-                return;
-            }
-            if(this.valid()){
-                this.freeze();
-                this.clearLine();
-                this.tCon.pushBlock(this.block);
-                this.newBlock();
-                this.render.render();
+
+            }else{
+                if (this.valid(0, 1)) {
+                    this.render.render();
+                    return;
+                }
+                if(this.valid()){
+                    this.freeze();
+                    this.clearLine();
+                    this.tCon.pushBlock(this.block);
+                    this.newBlock();
+                    this.render.render();
 
 
-            }
-            if (this._lose) {
-                //新しく始めるのかどうするのかを決める
-                // this.tCon.finishGame();
-                clearInterval(this.interval);
-                this.tCon.finishGame();
-                return;
+                }
+                if (this._lose) {
+                    //新しく始めるのかどうするのかを決める
+                    // this.tCon.finishGame();
+                    clearInterval(this.interval);
+                    this.tCon.finishGame();
+                    return;
+                }
+
             }
 
         }
@@ -129,8 +150,12 @@ export class Tetris {
     public valid(offsetX:number = 0, offsetY:number = 0, rotate:number = 0):boolean {
         const block = this.block;
         const result = this.result;
+        console.log("offX"+offsetX);
         offsetX = block.point.x + offsetX;
+        console.log("offX"+offsetX);
+        console.log("offT"+offsetY);
         offsetY = block.point.y + offsetY;
+        console.log("offT"+offsetY);
 
         const blocks:Point[] = block.form[(block.angle + rotate) % 4];
         const coreType = result[offsetX][offsetY].type;
