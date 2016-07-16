@@ -18,7 +18,7 @@ export class DBStore {
 
 
     constructor() {
-        this.config = JSON.parse(fs.readFileSync("./../db/config.json").toString());
+        this.config = JSON.parse(fs.readFileSync("./server/db/config.json").toString());
         this.connection = mysql.createPool(this.config);
     }
 
