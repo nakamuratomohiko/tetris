@@ -31,10 +31,11 @@ export class Tetris {
         this.tCon = tCon;
         this.blockFactory = BlockFactory.getInstance();
         this.result = [];
-        for (let x = 0; x < this.cols; x++) {
+        for (let x = 0; x < this.cols+this.next + 1; x++) {
             this.result[x] = [];
         }
         //配列を初期化する
+
         this.init();
         //初期のブロックをセット
         this.render = new Render(this.result);
@@ -62,6 +63,8 @@ export class Tetris {
      */
     public setBlockList(blockList:BlockType[]) {
         this.blockList = blockList;
+        this.nextBlock = this.blockFactory.getBlock(this.blockList.pop());
+        this.nextnextBlock = this.blockFactory.getBlock(this.blockList.pop());
     }
 
     /**
@@ -168,9 +171,56 @@ export class Tetris {
             this.render.setBlock(this.block);
             return;
         }
+        this.nextBlockAreaSet();
         this.block.reset();
         this.block.point.x = this.cols / 2;
         this.render.setBlock(this.block);
+    }
+
+    /**
+     * 次のブロック、次の次ブロックを配列にセット
+     */
+    private nextBlockAreaSet(){
+        //nextBlockAreaの中身を書き直すために情報を変える
+        for(let x = this.cols; x < this.cols+ this.next; x++){
+            for(let y = 1; y < this.rows  -1; y++){
+
+                if(y == 5){
+                    //次のブロックと次の次ブロックを区切る
+                    this.result[x][y] = {type:-1,color:"black"};
+                }else{
+                    this.result[x][y] = {type:0,color:"white"};
+                }
+
+            }
+        }
+
+        const x = this.cols + this.next -3;
+
+        if(this.nextBlock !== undefined) {
+            //ブロックの中心軸を書く
+            //nextBlockを書く
+            const y = 2;
+            const nBlock = this.nextBlock;
+            const form = nBlock.form[0];
+            this.result[x][y] = {type: 0, color: nBlock.color};
+            for (let i  in form) {
+                this.result[x + form[i].x][y + form[i].y] = {type: 0, color: nBlock.color};
+            }
+        }
+
+        //nextnextBlockを書く
+        if(this.nextnextBlock !== undefined){
+
+            const y = 7;
+            const nnBlock = this.nextnextBlock;
+            const form = nnBlock.form[0];
+            this.result[x][y] = {type: 0, color: nnBlock.color};
+            for (let i  in form) {
+                this.result[x + form[i].x][y + form[i].y] = {type: 0, color: nnBlock.color};
+            }
+
+        }
     }
 
     /**
@@ -178,15 +228,15 @@ export class Tetris {
      */
     private
     init() {
-        for (let x = 0; x < this.cols + this.next; x++) {
+        for (let x = 0; x < this.cols + this.next + 1; x++) {
             for (let y = 0; y < this.rows; y++) {
-                if (x == 0 || x == this.cols - 1) {
+                if (x == 0 || x == this.cols - 1 || x == this.cols+this.next ) {
                     this.result[x][y] = {type: -1, color: "black"};
 
                 } else if (y == (this.rows - 1) || y == 0) {
                     this.result[x][y] = {type: -1, color: "black"};
 
-                } else if (y == 1 || y == 2 || y == 3 || y == 4) {
+                } else if (y == 1 || y == 2 || y == 3 || y == 4 ) {
                     this.result[x][y] = {type: -2, color: "gray"}
 
                 } else if(this.cols <= x && y == 5) {
