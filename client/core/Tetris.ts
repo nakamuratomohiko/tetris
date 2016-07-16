@@ -25,6 +25,7 @@ export class Tetris {
     private render:Render;
     private nextBlock:Block;//次に入るブロック
     private nextnextBlock:Block;//次の次に入るブロック
+
     constructor(tCon:TetrisController) {
         this.tCon = tCon;
         this.blockFactory = BlockFactory.getInstance();
@@ -158,7 +159,9 @@ export class Tetris {
      * ブロックタイプの配列から次の要素を取得してBlockインスタンスを返す
      */
     private newBlock() {
-        this.block = this.blockFactory.getBlock(this.blockList.pop());
+        this.block = this.nextBlock;
+        this.nextBlock = this.nextnextBlock;
+        this.nextnextBlock = this.blockFactory.getBlock(this.blockList.pop());
         if(this.block === undefined){
             this._lose = true;
             this.render.setBlock(this.block);
