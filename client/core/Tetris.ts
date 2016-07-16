@@ -23,7 +23,8 @@ export class Tetris {
     private block:Block;//今操作してるブロック
     private tCon:TetrisController;
     private render:Render;
-
+    private nextBlock:Block;//次に入るブロック
+    private nextnextBlock:Block;//次の次に入るブロック
     constructor(tCon:TetrisController) {
         this.tCon = tCon;
         this.blockFactory = BlockFactory.getInstance();
