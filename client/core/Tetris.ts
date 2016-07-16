@@ -178,7 +178,7 @@ export class Tetris {
      */
     private
     init() {
-        for (let x = 0; x < this.cols; x++) {
+        for (let x = 0; x < this.cols + this.next; x++) {
             for (let y = 0; y < this.rows; y++) {
                 if (x == 0 || x == this.cols - 1) {
                     this.result[x][y] = {type: -1, color: "black"};
@@ -189,7 +189,10 @@ export class Tetris {
                 } else if (y == 1 || y == 2 || y == 3 || y == 4) {
                     this.result[x][y] = {type: -2, color: "gray"}
 
-                } else {
+                } else if(this.cols <= x && y == 5) {
+                    //ネクストブロックの区切りを記述
+                    this.result[x][y] = {type: -1, color:"black"};
+                }else {
                     this.result[x][y] = {type: 0, color: "white"};
                 }
 
