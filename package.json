@@ -20,7 +20,7 @@
     "url": "git+https://github.com/nakamuratomohiko/tetris.git"
   },
   "author": "Tomohiko Nakamura",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/nakamuratomohiko/tetris/issues"
   },
