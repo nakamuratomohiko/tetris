@@ -5,7 +5,6 @@ import * as fs from "fs";
 import * as socketio from "socket.io";
 import * as express from "express";
 import * as http from "http";
-import {BlockType} from "../../model/BlockType";
 import {TetrisServer} from "./TetrisServer";
 import {Block} from "../../model/Block";
 
