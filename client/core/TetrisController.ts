@@ -10,13 +10,11 @@ export class TetrisController{
 
     private commu:Communicator;
     private tetris:Tetris;
-    private user:User;
 
     constructor(){
         this.commu = new Communicator(this);
         this.tetris = new Tetris(this);
         document.body.onkeydown = (e)=>this.onKeyDown(e);
-        this.user = new User();
         this.ready();
         document.getElementById("refresh").onclick = ()=> this.ready();
         document.getElementById("start").onclick = ()=>this.start();
