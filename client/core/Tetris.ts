@@ -150,13 +150,9 @@ export class Tetris {
     public valid(offsetX:number = 0, offsetY:number = 0, rotate:number = 0):boolean {
         const block = this.block;
         const result = this.result;
-        console.log("offX"+offsetX);
         offsetX = block.point.x + offsetX;
-        console.log("offX"+offsetX);
-        console.log("offT"+offsetY);
         offsetY = block.point.y + offsetY;
-        console.log("offT"+offsetY);
-
+        
         const blocks:Point[] = block.form[(block.angle + rotate) % 4];
         const coreType = result[offsetX][offsetY].type;
 
