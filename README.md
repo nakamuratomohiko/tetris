@@ -10,6 +10,11 @@ moduleは、リアルタイム通信にsoket.ioを使用。
 
 #Demo
 http://imyme.xyz:8080
+操作方法は十字キー
+上:回転
+右:右移動
+左:左移動
+下:下移動
 
 ## Licence
 MIT
