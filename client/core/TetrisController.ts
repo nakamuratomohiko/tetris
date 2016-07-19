@@ -1,8 +1,7 @@
 import {Communicator} from "./Communicator";
 import {Tetris} from "./Tetris";
-import {BlockType} from "../model/BlockType";
-import {Block} from "../model/Block";
-import {User} from "../model/User";
+import {BlockType} from "../../model/BlockType";
+import {Block} from "../../model/Block";
 /**
  * Created by vista on 2016/07/07.
  */

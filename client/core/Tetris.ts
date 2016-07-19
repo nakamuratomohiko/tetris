@@ -1,8 +1,8 @@
-import {BlockFactory} from "../model/BlockFactory";
-import {BlockType} from "../../server/model/BlockType";
-import {Board} from "../model/Board";
-import {Block} from "../model/Block";
-import {Point} from "../../server/model/Point";
+import {BlockFactory} from "../../model/BlockFactory";
+import {BlockType} from "../../model/BlockType";
+import {Board} from "../../model/Board";
+import {Block} from "../../model/Block";
+import {Point} from "../../model/Point";
 import {TetrisController} from "./TetrisController";
 import {Render} from "./Render";
 

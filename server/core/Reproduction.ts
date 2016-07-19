@@ -1,9 +1,9 @@
-import {Block} from "../model/Block";
-import {Point} from "../model/Point";
-import {BlockType} from "../model/BlockType";
+import {Block} from "../../model/Block";
+import {Point} from "../../model/Point";
+import {BlockType} from "../../model/BlockType";
 import Promise = require("any-promise/index");
 import {DBStore} from "../db/DBStore";
-import {BlockFactory} from "../model/BlockFactory";
+import {BlockFactory} from "../../model/BlockFactory";
 import {Generator} from "./Generator";
 /**
  * Created by vista on 2016/07/05.
