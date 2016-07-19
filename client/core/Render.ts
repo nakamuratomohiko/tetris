@@ -1,5 +1,5 @@
-import {Board} from "../model/Board";
-import {Block} from "../model/Block";
+import {Board} from "../../model/Board";
+import {Block} from "../../model/Block";
 /**
  * Created by vista on 2016/07/06.
  */
