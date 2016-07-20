@@ -1,6 +1,6 @@
-import {Block} from "/Block";
-import {BlockType} from "/BlockType";
-import {Point} from "/Point";
+import {Block} from "./Block";
+import {BlockType} from "./BlockType";
+import {Point} from "./Point";
 /**
  * Created by vista on 2016/07/15.
  */
