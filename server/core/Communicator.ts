@@ -32,7 +32,7 @@ export class Communicator {
             }
         );
 
-        app.get('/app', function (req, res) {
+        app.get('/app.js', function (req, res) {
                 fs.readFile('./client/dist/app.js',
                     function (err, data) {
                         if (err) {
