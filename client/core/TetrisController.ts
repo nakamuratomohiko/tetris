@@ -137,6 +137,26 @@ export class TetrisController{
     }
 
     /**
+     * 一時停止を知らせるためエラーの中に表示する
+     */
+    public pause(){
+        const p = document.getElementById("error");
+        const name = <HTMLInputElement>document.getElementById("name");
+        if(this.tetris.pause()) {
+            p.innerHTML = "pause";
+        }else{
+            if(name.value == ""){
+                p.innerHTML = "名前は先にいれてください";
+            }else{
+                p.innerHTML = "";
+
+
+            }
+            
+        }
+    }
+
+    /**
      * キーをセット
      * @param e
      */
@@ -147,7 +167,8 @@ export class TetrisController{
             37: 'left',
             39: 'right',
             40: 'down',
-            38: 'rotate'
+            38: 'rotate',
+            32: 'space'
         };
 
         if(typeof keys[e.keyCode] != 'undefined'){
@@ -181,6 +202,9 @@ export class TetrisController{
                 break;
             case 'down':
                 this.tetris.tick(0,1);
+                break;
+            case 'space':
+                this.pause();
                 break;
         }
     }
