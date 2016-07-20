@@ -178,8 +178,16 @@ export class Reproduction {
 
         }
 
+        let score = lane * 10;
 
-        this._score = this._score + (lane * 10);
+        if(lane > 1){
+            score += lane * 10;
+            if(lane == 4){
+                score += 20;
+            }
+        }
+
+        this._score += score;
     }
 
     /**
