@@ -18,7 +18,7 @@ export class ReverseLBlock extends Block{
     }
     
     protected createColor():string{
-        return "lightsteelblue";
+        return "brown";
 
     }
 
