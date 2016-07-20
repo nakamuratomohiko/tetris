@@ -26,8 +26,10 @@ export class Tetris {
     private render:Render;
     private nextBlock:Block;//次に入るブロック
     private nextnextBlock:Block;//次の次に入るブロック
+    private _pause:boolean;//一時停止のフラグ
 
     constructor(tCon:TetrisController) {
+        this._pause = false;
         this.tCon = tCon;
         this.blockFactory = BlockFactory.getInstance();
         this.result = [];
@@ -84,56 +86,59 @@ export class Tetris {
      * 自動でずらす、ブロックの検証もしている
      */
     public tick(offsetX:number = 0, offsetY:number = 1, rotate:number = 0) {
-        if (this.valid(offsetX, offsetY, rotate)) {
-            this.block.point.y += offsetY;
-            this.block.point.x += offsetX;
-            this.block.angle = rotate;
-            this.render.render();
-
-        } else {//何かあったとき
-            if(rotate != 0){
-                if(this.valid(1,0,1)){//右に動ける
-                    this.block.point.x += 1;
-                    this.block.angle = 1;
-
-                }else if(this.valid(2,0,1) && this.block.point.x < this.cols -2 ){
-                    this.block.point.x += 2;
-                    this.block.angle = 1;
-
-                }else if(this.valid(-1,0,1)){
-                    this.block.point.x += -1;
-                    this.block.angle = 1;
-
-                }else if(this.valid(-2,0,1) && this.block.point.x > 2){
-                    this.block.point.x += -2;
-                    this.block.angle = 1;
-                }
+        if(this._pause){
+        }else {
+            if (this.valid(offsetX, offsetY, rotate)) {
+                this.block.point.y += offsetY;
+                this.block.point.x += offsetX;
+                this.block.angle = rotate;
                 this.render.render();
 
-            }else{
-                if (this.valid(0, 1)) {
-                    this.render.render();
-                    return;
-                }
-                if(this.valid()){
-                    this.freeze();
-                    this.clearLine();
-                    this.tCon.pushBlock(this.block);
-                    this.newBlock();
+            } else {//何かあったとき
+                if (rotate != 0) {
+                    if (this.valid(1, 0, 1)) {//右に動ける
+                        this.block.point.x += 1;
+                        this.block.angle = 1;
+
+                    } else if (this.valid(2, 0, 1) && this.block.point.x < this.cols - 2) {
+                        this.block.point.x += 2;
+                        this.block.angle = 1;
+
+                    } else if (this.valid(-1, 0, 1)) {
+                        this.block.point.x += -1;
+                        this.block.angle = 1;
+
+                    } else if (this.valid(-2, 0, 1) && this.block.point.x > 2) {
+                        this.block.point.x += -2;
+                        this.block.angle = 1;
+                    }
                     this.render.render();
 
+                } else {
+                    if (this.valid(0, 1)) {
+                        this.render.render();
+                        return;
+                    }
+                    if (this.valid()) {
+                        this.freeze();
+                        this.clearLine();
+                        this.tCon.pushBlock(this.block);
+                        this.newBlock();
+                        this.render.render();
 
-                }
-                if (this._lose) {
-                    //新しく始めるのかどうするのかを決める
-                    // this.tCon.finishGame();
-                    clearInterval(this.interval);
-                    this.tCon.finishGame();
-                    return;
+
+                    }
+                    if (this._lose) {
+                        //新しく始めるのかどうするのかを決める
+                        // this.tCon.finishGame();
+                        clearInterval(this.interval);
+                        this.tCon.finishGame();
+                        return;
+                    }
+
                 }
 
             }
-
         }
 
     }
@@ -321,6 +326,26 @@ export class Tetris {
             }
 
         }
+    }
+
+    /**
+     * 一時停止
+     * @returns {boolean}
+     */
+    public pause():boolean{
+        
+        if(this._pause ){
+            this.interval = setInterval(()=>this.tick(), 400);
+            this._pause = false;
+            return this._pause;
+            
+        }else{
+            
+            clearInterval(this.interval);
+            this._pause = true;
+            return this._pause;
+        }
+
     }
 
 
