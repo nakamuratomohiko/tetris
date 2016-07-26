@@ -1,12 +1,11 @@
 import {Block} from "./Block";
-import {Point} from "./Point";
 import {BlockType} from "./BlockType";
+import {Point} from "./Point";
 /**
  * Created by vista on 2016/07/04.
  */
 
-
-export class ReverseZBlock extends Block{
+export class ReverseLBlock extends Block{
 
     constructor(){
         super();
@@ -14,23 +13,27 @@ export class ReverseZBlock extends Block{
 
     public reset(){
         super.reset();
-        this.point.y = 1;
-
+        this.point.y = 2;
+        
     }
+    
     protected createColor():string{
-        return "red";
+        return "brown";
+
     }
 
     protected setBlockType():BlockType{
-        return BlockType.ReverseZBlock;
+        return BlockType.ReverseLBlock;
     }
 
     protected createForm():Point[][]{
         return [
-          [{x:1,y:0},{x:0,y:1},{x:-1,y:1}],
-            [{x:0,y:-1},{x:1,y:0},{x:1,y:1}],
-              [{x:1,y:0},{x:0,y:1},{x:-1,y:1}],
-              [{x:0,y:-1},{x:1,y:0},{x:1,y:1}]
+            [{x:-1,y:1},{x:0,y:1},{x:0,y:-1}],
+            [{x:-1,y:-1},{x:1,y:0},{x:-1,y:0}],
+            [{x:1,y:-1},{x:0,y:-1},{x:0,y:1}],
+            [{x:1,y:1},{x:-1,y:0},{x:1,y:0}]
+
         ];
     }
+
 }

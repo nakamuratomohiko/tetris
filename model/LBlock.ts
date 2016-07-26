@@ -14,7 +14,7 @@ export class LBlock extends Block{
     
     public reset(){
         super.reset();
-        this.point.y = 1;
+        this.point.y = 2;
     }
 
     protected createColor():string{
@@ -27,10 +27,10 @@ export class LBlock extends Block{
 
     protected createForm():Point[][]{
         return [
-            [{x:1,y:0},{x:0,y:1},{x:0,y:2}],
-            [{x:0,y:-1},{x:1,y:0},{x:2,y:0}],
-            [{x:-1,y:0},{x:0,y:-1},{x:0,y:-2}],
-            [{x:0,y:1},{x:-1,y:0},{x:-2,y:0}]
+            [{x:1,y:1},{x:0,y:-1},{x:0,y:1}],
+            [{x:-1,y:1},{x:1,y:0},{x:-1,y:0}],
+            [{x:-1,y:-1},{x:0,y:-1},{x:0,y:1}],
+            [{x:1,y:-1},{x:-1,y:0},{x:1,y:0}]
         ];
     }
 }

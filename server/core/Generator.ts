@@ -1,4 +1,4 @@
-import {BlockType} from "../model/BlockType";
+import {BlockType} from "../../model/BlockType";
 
 /**
  * Created by vista on 2016/07/04.

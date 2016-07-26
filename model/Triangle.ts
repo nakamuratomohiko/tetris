@@ -1,6 +1,6 @@
-import {Block} from "../../server/model/Block";
-import {BlockType} from "../../server/model/BlockType";
-import {Point} from "../../server/model/Point";
+import {Block} from "./Block";
+import {BlockType} from "./BlockType";
+import {Point} from "./Point";
 /**
  * Created by vista on 2016/07/15.
  */

@@ -18,7 +18,7 @@ export class DBStore {
 
 
     constructor() {
-        this.config = JSON.parse(fs.readFileSync("./../db/config.json").toString());
+        this.config = JSON.parse(fs.readFileSync("./server/db/config.json").toString());
         this.connection = mysql.createPool(this.config);
     }
 
@@ -35,18 +35,23 @@ export class DBStore {
             connection.getConnection((err, connect) => {
                 if (err) {
                     reject();
-                }
-                connect.query("INSERT INTO score(id,name,score) VALUE (null," + name + ",'" + score + "');", function (err, rows, fields) {
-                    if (err) throw err;
-                    if (rows === undefined) {
-                        connect.release();
-                        reject("データを保存できませんでした");
-                    } else {
-                        connect.release();
-                        resolve();
-                    }
+                }else {
+                    connect.query("INSERT INTO score(id,name,score) VALUE (null," + name + ",'" + score + "');", function (err, rows, fields) {
+                        if (err){
+                            reject();
 
-                });
+                        }else {
+
+                            if (rows === undefined) {
+                                connect.release();
+                                reject("データを保存できませんでした");
+                            } else {
+                                connect.release();
+                                resolve();
+                            }
+                        }
+                    });
+                }
             });
         });
 
@@ -64,23 +69,32 @@ export class DBStore {
 
             connection.getConnection((err, connect) => {
 
-                connect.query("SELECT * FROM `score` ORDER BY score DESC LIMIT 20", function (err, rows, fields) {
-                    if (err) throw err;
+                if(err){
+                    reject();
 
-                    if (rows[0] === undefined) {
-                        connect.release();
-                        reject("ランキング取得できませんでした");
-                    } else {
-                        const list = [];
-                        for (let score in rows) {
-                            list.push(rows[score]);
+                }else {
+                    connect.query("SELECT * FROM `score` ORDER BY score DESC LIMIT 20", function (err, rows, fields) {
+                        if (err) {
+                            reject();
+
+                        } else {
+
+                            if (rows[0] === undefined) {
+                                connect.release();
+                                reject("ランキング取得できませんでした");
+                            } else {
+                                const list = [];
+                                for (let score in rows) {
+                                    list.push(rows[score]);
+                                }
+                                connect.release();
+                                resolve(list);
+
+                            }
                         }
-                        connect.release();
-                        resolve(list);
 
-                    }
-
-                });
+                    });
+                }
 
             });
 

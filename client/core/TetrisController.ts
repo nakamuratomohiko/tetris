@@ -1,8 +1,7 @@
 import {Communicator} from "./Communicator";
 import {Tetris} from "./Tetris";
-import {BlockType} from "../model/BlockType";
-import {Block} from "../model/Block";
-import {User} from "../model/User";
+import {BlockType} from "../../model/BlockType";
+import {Block} from "../../model/Block";
 /**
  * Created by vista on 2016/07/07.
  */
@@ -11,16 +10,17 @@ export class TetrisController{
 
     private commu:Communicator;
     private tetris:Tetris;
-    private user:User;
 
     constructor(){
         this.commu = new Communicator(this);
         this.tetris = new Tetris(this);
         document.body.onkeydown = (e)=>this.onKeyDown(e);
-        this.user = new User();
         this.ready();
         document.getElementById("refresh").onclick = ()=> this.ready();
         document.getElementById("start").onclick = ()=>this.start();
+        const e = <HTMLInputElement>document.getElementById("error");
+        e.innerHTML = "名前は先にいれてください";
+
 
     }
 
@@ -32,13 +32,16 @@ export class TetrisController{
         const s = <HTMLInputElement>document.getElementById("score");
         s.innerHTML = "";
         const e = <HTMLInputElement>document.getElementById("error");
-        e.innerHTML = "";
+
         const a = <HTMLInputElement>document.getElementById("start");
         const name:HTMLInputElement = <HTMLInputElement>document.getElementById("name");
-        if(name.value  == ""){
-            a.disabled = true;
-            e.innerHTML = "名前を入れてください!";
+        a.disabled = true;
+        if(name.value  != ""){
+            e.innerHTML = "";
             this.commu.ready();
+        }else{
+            e.innerHTML = "名前は先にいれてください";
+
         }
 
     }
@@ -134,6 +137,26 @@ export class TetrisController{
     }
 
     /**
+     * 一時停止を知らせるためエラーの中に表示する
+     */
+    public pause(){
+        const p = document.getElementById("error");
+        const name = <HTMLInputElement>document.getElementById("name");
+        if(this.tetris.pause()) {
+            p.innerHTML = "pause";
+        }else{
+            if(name.value == ""){
+                p.innerHTML = "名前は先にいれてください";
+            }else{
+                p.innerHTML = "";
+
+
+            }
+            
+        }
+    }
+
+    /**
      * キーをセット
      * @param e
      */
@@ -144,7 +167,8 @@ export class TetrisController{
             37: 'left',
             39: 'right',
             40: 'down',
-            38: 'rotate'
+            38: 'rotate',
+            32: 'space'
         };
 
         if(typeof keys[e.keyCode] != 'undefined'){
@@ -178,6 +202,9 @@ export class TetrisController{
                 break;
             case 'down':
                 this.tetris.tick(0,1);
+                break;
+            case 'space':
+                this.pause();
                 break;
         }
     }

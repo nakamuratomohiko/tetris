@@ -1,9 +1,7 @@
-import {Block} from "../model/Block";
-import {Point} from "../model/Point";
-import {BlockType} from "../model/BlockType";
+import {BlockType} from "../../model/BlockType";
 import Promise = require("any-promise/index");
 import {DBStore} from "../db/DBStore";
-import {BlockFactory} from "../model/BlockFactory";
+import {BlockFactory} from "../../model/BlockFactory";
 import {Generator} from "./Generator";
 /**
  * Created by vista on 2016/07/05.
@@ -180,8 +178,16 @@ export class Reproduction {
 
         }
 
+        let score = lane * 10;
 
-        this._score = this._score + (lane * 10);
+        if(lane > 1){
+            score += lane * 10;
+            if(lane == 4){
+                score += 20;
+            }
+        }
+
+        this._score += score;
     }
 
     /**

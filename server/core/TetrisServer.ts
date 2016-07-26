@@ -1,7 +1,7 @@
 import {Reproduction} from "./Reproduction";
-import {Block} from "../model/Block";
+import {Block} from "../../model/Block";
 import {Communicator} from "./Communicator";
-import {BlockType} from "../model/BlockType";
+import {BlockType} from "../../model/BlockType";
 import * as sms from "source-map-support";
 /**
  * Created by vista on 2016/07/12.

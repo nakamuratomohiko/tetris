@@ -1,7 +1,7 @@
 import * as io from "socket.io-client";
-import {Block} from "../model/Block";
+import {Block} from "../../model/Block";
 import {TetrisController} from "./TetrisController";
-import {BlockType} from "../model/BlockType";
+import {BlockType} from "../../model/BlockType";
 
 /**
  * Created by vista on 2016/07/08.

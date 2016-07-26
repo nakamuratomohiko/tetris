@@ -5,9 +5,8 @@ import * as fs from "fs";
 import * as socketio from "socket.io";
 import * as express from "express";
 import * as http from "http";
-import {BlockType} from "../model/BlockType";
 import {TetrisServer} from "./TetrisServer";
-import {Block} from "../model/Block";
+import {Block} from "../../model/Block";
 
 /**
  * 通信担当クラス
@@ -19,7 +18,7 @@ export class Communicator {
         let app = express();
 
         app.get('/', function (req, res) {
-                fs.readFile('../../client/core/index.html',
+                fs.readFile('./client/core/index.html',
                     function (err, data) {
                         if (err) {
                             res.writeHead(500);
@@ -33,8 +32,8 @@ export class Communicator {
             }
         );
 
-        app.get('/app', function (req, res) {
-                fs.readFile('../../client/dist/app.js',
+        app.get('/app.js', function (req, res) {
+                fs.readFile('./client/dist/app.js',
                     function (err, data) {
                         if (err) {
                             res.writeHead(500);
