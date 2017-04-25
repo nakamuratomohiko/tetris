@@ -45,3 +45,5 @@ test.*
 /client/core/server.ts
 /client/dist/
 /tetris.git.iml
+!/webpack.config.js
+/tetris.iml
