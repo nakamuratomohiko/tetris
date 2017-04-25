@@ -3,7 +3,6 @@
  */
 
 import * as mysql from "mysql";
-import Promise = require("any-promise/index");
 import {config} from "./config";
 import * as fs from "fs";
 
