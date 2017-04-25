@@ -44,3 +44,4 @@ test.*
 /client/core/test/
 /client/core/server.ts
 /client/dist/
+/tetris.git.iml
