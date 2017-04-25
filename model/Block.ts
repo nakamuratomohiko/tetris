@@ -16,16 +16,16 @@ export abstract class Block{
     private _color:string;
     /**
      * 現在そのブロックが動いている状態か判別
-     * true = move , false = stop
+     * true = stop , false = move
      */
-    private _move : boolean;
+    private _stop : boolean;
 
     constructor(){
         this._form = this.createForm();
         this._blockType = this.setBlockType();
         this._color = this.createColor();
         this._point = {x:0,y:0};
-        this._move = true;
+        this._stop = false;
     }
 
     /**
@@ -110,13 +110,13 @@ export abstract class Block{
      * 状態をストップにする
      */
     public stop() {
-        this._move = false;
+        this._stop = true;
     }
 
     /**
      * 状態を取得
      * @returns {boolean}
      */
-    public get move():boolean {return this._move;}
+    public get move():boolean {return this._stop;}
 
 }
