@@ -9,7 +9,7 @@ export class Render{
     //壁はblack,whiteはカラ,配列はnumberではなく色配列とする
     private canvas = document.getElementsByTagName('canvas')[0];
     private ctx = this.canvas.getContext('2d');
-    private size = 40;
+    private size = 35;
     private cols:number = 10;//横分割個数
     private rows:number = 20;//縦分割個数
     private result:Board[][];
