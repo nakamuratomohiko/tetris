@@ -46,3 +46,4 @@ test.*
 /client/dist/
 /tetris.git.iml
 !/webpack.config.js
+/tetris.iml
