@@ -7,18 +7,15 @@ import {Block} from "../../model/Block";
 
 export class Render{
     //壁はblack,whiteはカラ,配列はnumberではなく色配列とする
-    private canvas = document.getElementsByTagName('canvas')[0];
-    private ctx = this.canvas.getContext('2d');
+    private ctx;
     private size = 35;
     private cols:number = 10;//横分割個数
     private rows:number = 20;//縦分割個数
-    private result:Board[][];
     private block:Block;//操作しているBlock
     private next:number = 4;//nextBlockを表示する横領域
 
-    constructor(result:Board[][]){
-        this.result = result;
-        this.render();
+    constructor(canvas : HTMLCanvasElement){
+        this.ctx = canvas.getContext('2d');
     }
 
     /**
@@ -32,7 +29,7 @@ export class Render{
     /**
      * キャンバスに書き込む
      */
-    public render(){
+    public render(result : Board[][]){
         //キャンバスをリセット
         this.ctx.clearRect(0,0,this.size*this.cols,this.size * this.rows);
         this.ctx.strokeStyle = 'black';
@@ -42,7 +39,7 @@ export class Render{
 
                 // if(this.result[x][y].type != 0){
 
-                    this.ctx.fillStyle = this.result[x][y].color;
+                    this.ctx.fillStyle = result[x][y].color;
                     this.drawBlock(x,y);
 
                 // }
