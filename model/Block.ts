@@ -33,6 +33,7 @@ export abstract class Block{
      */
     public  reset(){
         this._angle = 0;
+        this._stop = false;
     };
     
     /**
