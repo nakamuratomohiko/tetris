@@ -1,5 +1,4 @@
 import {BlockType} from "../../model/BlockType";
-import Promise = require("any-promise/index");
 import {DBStore} from "../db/DBStore";
 import {BlockFactory} from "../../model/BlockFactory";
 import {Generator} from "./Generator";
