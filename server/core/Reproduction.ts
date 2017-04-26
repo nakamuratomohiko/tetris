@@ -106,38 +106,45 @@ export class Reproduction {
      * @returns {boolean}
      */
     private verification(block):boolean {
+
+        //ブロックが停止状態で保持しているブロック情報との確認
+        if (block._stop &&  this.blockList.pop() != block._blockType) {return false;}
+
         //置いた時間が終了時間を超えていた場合不正とみなす。
         // if (this.endTime < block.date) {return false;}
         //配列から引っ張ってきて、引数と比較
-        if(this.blockList.pop() == block._blockType){
-            const px:number = block._point.x;
-            const py:number = block._point.y;
-            const tBlock = this.blockFactry.getBlock(block._blockType);
-            if(tBlock === undefined){;return false;}
-            //ここで検証する
+        const px:number = block._point.x;
+        const py:number = block._point.y;
+        const tBlock = this.blockFactry.getBlock(block._blockType);
+        if(tBlock === undefined){return false;}
+        //ここで検証する
 
-            if (this.result[px][py] == 0) {
-                this.result[px][py] = -2;
-            }else{
+        //座標をまず調べる
+        if (this.result[px][py] == 0 && block._stop ) {
+            this.result[px][py] = -2;
+
+        //ブロックが動いている、そこにブロックがないときは何もしない
+        }else if(this.result[px][py] == 0 && block._stop == false) {
+
+        }else{
+            return false;
+        }
+        //座標をもとに周りのブロックを調べる
+        for (let i of tBlock.form[block._angle]) {
+            let x = i.x;
+            let y = i.y;
+            if (this.result[px + x][py + y] == 0 && block._stop) {
+                //仮で入れる
+                this.result[px + x][py + y] = -2;
+            } else if(this.result[px + x][py + y] == 0 && block._stop == false) {
+
+            }else {
+                //失敗
                 return false;
-            }let c = 0;
-            for (let i of tBlock.form[block._angle]) {
-                let x = i.x;
-                let y = i.y;
-                if (this.result[px + x][py + y] == 0) {
-                    //仮で入れる
-                    this.result[px + x][py + y] = -2;
-                } else {
-                    //失敗
-                    return false;
-                }
-
-
             }
-            return true;    
-        }//ここで引数のブロックのタイプから手元で同じものを作成してテストを始める
-        return false;
-        
+        }
+        return true;
+
     }
 
     /**
@@ -240,6 +247,22 @@ export class Reproduction {
 
             }
 
+        }
+    }
+
+    /**
+     * その人の結果をコンソールに表示するためのメソッド
+     */
+    public resultView():void {
+        const witth = this.result.length;
+        for (let y = 0;  y < this.rows ; y++ ) {
+            let resultStr = '';
+            for (let x = 0 ; x < this.cols ; x++ ) {
+
+                resultStr += this.result[x][y];
+            }
+
+            console.log(resultStr);
         }
     }
 

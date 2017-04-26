@@ -3,7 +3,6 @@
  */
 
 import * as mysql from "mysql";
-import Promise = require("any-promise/index");
 import {config} from "./config";
 import * as fs from "fs";
 
@@ -34,11 +33,11 @@ export class DBStore {
         return new Promise<void>(function (resolve, reject) {
             connection.getConnection((err, connect) => {
                 if (err) {
-                    reject();
+                    reject('エラーです、管理者に報告してください。');
                 }else {
                     connect.query("INSERT INTO score(id,name,score) VALUE (null," + name + ",'" + score + "');", function (err, rows, fields) {
                         if (err){
-                            reject();
+                            reject('異常発生');
 
                         }else {
 
