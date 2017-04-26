@@ -243,5 +243,21 @@ export class Reproduction {
         }
     }
 
+    /**
+     * その人の結果をコンソールに表示するためのメソッド
+     */
+    public resultView():void {
+        const witth = this.result.length;
+        for (let y = 0;  y < this.rows ; y++ ) {
+            let resultStr = '';
+            for (let x = 0 ; x < this.cols ; x++ ) {
+
+                resultStr += this.result[x][y];
+            }
+
+            console.log(resultStr);
+        }
+    }
+
 
 }
