@@ -88,11 +88,13 @@ export class Tetris {
     public tick(offsetX:number = 0, offsetY:number = 1, rotate:number = 0) {
         if(this._pause){
         }else {
+
             if (this.valid(offsetX, offsetY, rotate)) {
                 this.block.point.y += offsetY;
                 this.block.point.x += offsetX;
                 this.block.angle = rotate;
                 this.render.render();
+                this.tCon.pushBlock(this.block);
 
             } else {//何かあったとき
                 if (rotate != 0) {
@@ -113,14 +115,19 @@ export class Tetris {
                         this.block.angle = 1;
                     }
                     this.render.render();
+                    this.tCon.pushBlock(this.block);
 
                 } else {
+                    //下にまだおりれるか判定する
                     if (this.valid(0, 1)) {
                         this.render.render();
+                        this.tCon.pushBlock(this.block);
                         return;
                     }
+                    //動けなくなった時の処理
                     if (this.valid()) {
                         this.freeze();
+                        this.block.stop();
                         this.clearLine();
                         this.tCon.pushBlock(this.block);
                         this.newBlock();
@@ -128,6 +135,7 @@ export class Tetris {
 
 
                     }
+                    //終了したかの判定
                     if (this._lose) {
                         //新しく始めるのかどうするのかを決める
                         // this.tCon.finishGame();
