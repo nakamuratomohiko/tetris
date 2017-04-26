@@ -28,9 +28,22 @@ export class Tetris {
     private nextnextBlock:Block;//次の次に入るブロック
     private _pause:boolean;//一時停止のフラグ
 
-    constructor(tCon:TetrisController) {
+    constructor(tCon?:TetrisController) {
+        let canvas : HTMLCanvasElement;
+
+        //自分の操作のTetris
+        if(tCon){
+            this.tCon = tCon;
+            canvas = document.getElementById('canvas') as HTMLCanvasElement;
+            this.render = new Render(canvas);
+
+        //自分以外テトリス
+        } else {
+            canvas = document.getElementById('opponent') as HTMLCanvasElement;
+            this.render = new Render(canvas);
+        }
+
         this._pause = false;
-        this.tCon = tCon;
         this.blockFactory = BlockFactory.getInstance();
         this.result = [];
         for (let x = 0; x < this.cols+this.next + 1; x++) {
@@ -39,8 +52,6 @@ export class Tetris {
         //配列を初期化する
 
         this.init();
-        //初期のブロックをセット
-        this.render = new Render(this.result);
 
     }
 
@@ -75,8 +86,6 @@ export class Tetris {
     public newGame() {
         clearInterval(this.interval);
         this.init();
-        //初期のブロックをセット
-        this.render = new Render(this.result);
         this.newBlock();
         this._lose = false;
         this.interval = setInterval(()=>this.tick(), 400);
