@@ -93,7 +93,7 @@ export class Tetris {
                 this.block.point.y += offsetY;
                 this.block.point.x += offsetX;
                 this.block.angle = rotate;
-                this.render.render();
+                this.render.render(this.result);
                 this.tCon.pushBlock(this.block);
 
             } else {//何かあったとき
@@ -114,13 +114,13 @@ export class Tetris {
                         this.block.point.x += -2;
                         this.block.angle = 1;
                     }
-                    this.render.render();
+                    this.render.render(this.result);
                     this.tCon.pushBlock(this.block);
 
                 } else {
                     //下にまだおりれるか判定する
                     if (this.valid(0, 1)) {
-                        this.render.render();
+                        this.render.render(this.result);
                         this.tCon.pushBlock(this.block);
                         return;
                     }
@@ -131,7 +131,7 @@ export class Tetris {
                         this.clearLine();
                         this.tCon.pushBlock(this.block);
                         this.newBlock();
-                        this.render.render();
+                        this.render.render(this.result);
 
 
                     }
