@@ -1,5 +1,6 @@
 import {Board} from "../../model/Board";
 import {Block} from "../../model/Block";
+import {ReceiveBlock} from "../../model/ReceiveBlock";
 /**
  * Created by vista on 2016/07/06.
  */
@@ -11,7 +12,7 @@ export class Render{
     private size;
     private cols:number = 10;//横分割個数
     private rows:number = 20;//縦分割個数
-    private block:Block;//操作しているBlock
+    private block:Block | ReceiveBlock;//操作しているBlock
     private next:number = 4;//nextBlockを表示する横領域
 
     constructor(canvas : HTMLCanvasElement, size : number ){
@@ -23,7 +24,7 @@ export class Render{
      * Blockをセットする
      * @param block
      */
-    public setBlock(block):void{
+    public setBlock(block : Block | ReceiveBlock):void{
         this.block = block;
     }
     
