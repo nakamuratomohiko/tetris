@@ -8,14 +8,15 @@ import {Block} from "../../model/Block";
 export class Render{
     //壁はblack,whiteはカラ,配列はnumberではなく色配列とする
     private ctx;
-    private size = 35;
+    private size;
     private cols:number = 10;//横分割個数
     private rows:number = 20;//縦分割個数
     private block:Block;//操作しているBlock
     private next:number = 4;//nextBlockを表示する横領域
 
-    constructor(canvas : HTMLCanvasElement){
+    constructor(canvas : HTMLCanvasElement, size : number ){
         this.ctx = canvas.getContext('2d');
+        this.size = size;
     }
 
     /**
