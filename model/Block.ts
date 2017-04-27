@@ -6,6 +6,7 @@
  */
 import {Point} from "./Point";
 import {BlockType} from "./BlockType";
+import {ReceiveBlock} from "./ReceiveBlock";
 
 export abstract class Block{
     private _form : Point[][];//図形
@@ -110,14 +111,27 @@ export abstract class Block{
     /**
      * 状態をストップにする
      */
-    public stop() {
-        this._stop = true;
+    public set stop(stop : boolean) {
+        this._stop = stop;
     }
 
     /**
      * 状態を取得
      * @returns {boolean}
      */
-    public get move():boolean {return this._stop;}
+    public get stop():boolean {return this._stop;}
+
+    public toReceiveBlock () : ReceiveBlock {
+        return {
+            form : this.form,
+            point : this.point,
+            date : this.date,
+            angle : this.angle,
+            blockType :this.blockType,
+            color : this.color,
+            stop : this.stop
+        };
+
+    }
 
 }

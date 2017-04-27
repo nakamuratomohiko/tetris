@@ -3,6 +3,7 @@ import {Block} from "../../model/Block";
 import {Communicator} from "./Communicator";
 import {BlockType} from "../../model/BlockType";
 import * as sms from "source-map-support";
+import {ReceiveBlock} from "../../model/RivalBlock";
 /**
  * Created by vista on 2016/07/12.
  */
@@ -72,7 +73,7 @@ export class TetrisServer{
      * @param block {Block}
      * @returns {Promise<number>}
      */
-    public verid(id:string,block:Block):Promise<number>{
+    public verid(id:string,block:ReceiveBlock):Promise<number>{
         return new Promise<number>((resolve,reject) =>{
             const re = this.reproList[id];
             if(re === undefined){
