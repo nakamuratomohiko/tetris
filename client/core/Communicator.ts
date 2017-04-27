@@ -74,7 +74,7 @@ export class Communicator{
      * ブロックを送信する
      * @param block {Block}
      */
-    public pushBlock(block:Block){
+    public pushBlock(block:ReceiveBlock){
         this.socket.emit('verification',block)
     }
 
