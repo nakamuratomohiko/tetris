@@ -3,7 +3,7 @@ import {Block} from "../../model/Block";
 import {Communicator} from "./Communicator";
 import {BlockType} from "../../model/BlockType";
 import * as sms from "source-map-support";
-import {ReceiveBlock} from "../../model/RivalBlock";
+import {ReceiveBlock} from "../../model/ReceiveBlock";
 /**
  * Created by vista on 2016/07/12.
  */
