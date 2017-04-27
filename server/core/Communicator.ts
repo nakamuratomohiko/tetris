@@ -6,7 +6,7 @@ import * as socketio from "socket.io";
 import * as express from "express";
 import * as http from "http";
 import {TetrisServer} from "./TetrisServer";
-import {Block} from "../../model/Block";
+import {ReceiveBlock} from "../../model/RivalBlock";
 
 /**
  * 通信担当クラス
@@ -84,7 +84,7 @@ export class Communicator {
             /**
              * ブロックの検証受け付ける
              */
-            client.on('verification', function (block:Block) {
+            client.on('verification', function (block:ReceiveBlock) {
                 tServer.verid(client.id,block)
                     .then((score)=>{
                         io.sockets.to(client.id).emit('notifyScore',score);

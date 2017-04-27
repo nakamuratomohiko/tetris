@@ -2,6 +2,7 @@ import {BlockType} from "../../model/BlockType";
 import {DBStore} from "../db/DBStore";
 import {BlockFactory} from "../../model/BlockFactory";
 import {Generator} from "./Generator";
+import {ReceiveBlock} from "../../model/RivalBlock";
 /**
  * Created by vista on 2016/07/05.
  */
@@ -83,10 +84,10 @@ export class Reproduction {
 
     /**
      * ブロックを送られてくる、検証から計算、ラインの削除まで行う
-     * @param block
+     * @param block {ReceiveBlock}
      * @returns {boolean}
      */
-    public pushBlock(block):boolean{
+    public pushBlock(block : ReceiveBlock):boolean{
         if( this.verification(block) ){
             this.change(1);
             this.calculation();
@@ -104,38 +105,38 @@ export class Reproduction {
      * @param block
      * @returns {boolean}
      */
-    private verification(block):boolean {
+    private verification(block : ReceiveBlock):boolean {
 
         //ブロックが停止状態で保持しているブロック情報との確認
-        if (block._stop &&  this.blockList.pop() != block._blockType) {return false;}
+        if (block.stop &&  this.blockList.pop() != block.blockType) {return false;}
 
         //置いた時間が終了時間を超えていた場合不正とみなす。
         // if (this.endTime < block.date) {return false;}
         //配列から引っ張ってきて、引数と比較
-        const px:number = block._point.x;
-        const py:number = block._point.y;
-        const tBlock = this.blockFactry.getBlock(block._blockType);
+        const px:number = block.point.x;
+        const py:number = block.point.y;
+        const tBlock = this.blockFactry.getBlock(block.blockType);
         if(tBlock === undefined){return false;}
         //ここで検証する
 
         //座標をまず調べる
-        if (this.result[px][py] == 0 && block._stop ) {
+        if (this.result[px][py] == 0 && block.stop ) {
             this.result[px][py] = -2;
 
         //ブロックが動いている、そこにブロックがないときは何もしない
-        }else if(this.result[px][py] == 0 && block._stop == false) {
+        }else if(this.result[px][py] == 0 && block.stop == false) {
 
         }else{
             return false;
         }
         //座標をもとに周りのブロックを調べる
-        for (let i of tBlock.form[block._angle]) {
+        for (let i of tBlock.form[block.angle]) {
             let x = i.x;
             let y = i.y;
-            if (this.result[px + x][py + y] == 0 && block._stop) {
+            if (this.result[px + x][py + y] == 0 && block.stop) {
                 //仮で入れる
                 this.result[px + x][py + y] = -2;
-            } else if(this.result[px + x][py + y] == 0 && block._stop == false) {
+            } else if(this.result[px + x][py + y] == 0 && block.stop == false) {
 
             }else {
                 //失敗
