@@ -369,13 +369,9 @@ export class Tetris {
 
     /**
      * 入れられたブロックを画面に表示する
-     * @param block
+     * @param block {Block}
      */
-    public rivalView(provisionalBlock) {
-        const block : Block = this.blockFactory.getBlock(provisionalBlock._blockType);
-        block.point = provisionalBlock._point;
-        block.angle = provisionalBlock._angle;
-
+    public rivalView(block : Block) {
         this.render.setBlock(block);
 
         if(block.stop){
