@@ -34,13 +34,13 @@ export class Tetris {
         //自分の操作のTetris
         if(tCon){
             this.tCon = tCon;
-            canvas = document.getElementById('canvas') as HTMLCanvasElement;
-            this.render = new Render(canvas);
+            canvas = document.getElementById('myCanvas') as HTMLCanvasElement;
+            this.render = new Render(canvas, 34);
 
         //自分以外テトリス
         } else {
-            canvas = document.getElementById('opponent') as HTMLCanvasElement;
-            this.render = new Render(canvas);
+            canvas = document.getElementById('rivalCanvas') as HTMLCanvasElement;
+            this.render = new Render(canvas,12);
         }
 
         this._pause = false;
