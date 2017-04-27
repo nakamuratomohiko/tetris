@@ -135,8 +135,8 @@ export class Tetris {
                     }
                     //動けなくなった時の処理
                     if (this.valid()) {
-                        this.freeze();
-                        this.block.stop();
+                        this.freeze(this.block);
+                        this.block.stop = true;
                         this.clearLine();
                         this.tCon.pushBlock(this.block);
                         this.newBlock();
@@ -297,11 +297,11 @@ export class Tetris {
     /**
      * ブロックを固定させる
      */
-    public freeze() {
-        const blocks:Point[] = this.block.form[this.block.angle];
-        const point = {x: this.block.point.x, y: this.block.point.y};
+    public freeze(block : Block) {
+        const blocks:Point[] = block.form[block.angle];
+        const point = {x: block.point.x, y: block.point.y};
 
-        const board = {type: 1, color: this.block.color};
+        const board = {type: 1, color: block.color};
         this.result[point.x][point.y] = board;
         for (let block of blocks) {
             if (this.result[block.x + point.x][block.y + point.y].type == -2) {
