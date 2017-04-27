@@ -5,6 +5,7 @@ import {Block} from "../../model/Block";
 import {Point} from "../../model/Point";
 import {TetrisController} from "./TetrisController";
 import {Render} from "./Render";
+import {ReceiveBlock} from "../../model/ReceiveBlock";
 
 /**
  * Created by vista on 2016/07/07.
@@ -28,9 +29,22 @@ export class Tetris {
     private nextnextBlock:Block;//次の次に入るブロック
     private _pause:boolean;//一時停止のフラグ
 
-    constructor(tCon:TetrisController) {
+    constructor(tCon?:TetrisController) {
+        let canvas : HTMLCanvasElement;
+
+        //自分の操作のTetris
+        if(tCon){
+            this.tCon = tCon;
+            canvas = document.getElementById('myCanvas') as HTMLCanvasElement;
+            this.render = new Render(canvas, 34);
+
+        //自分以外テトリス
+        } else {
+            canvas = document.getElementById('rivalCanvas') as HTMLCanvasElement;
+            this.render = new Render(canvas,20);
+        }
+
         this._pause = false;
-        this.tCon = tCon;
         this.blockFactory = BlockFactory.getInstance();
         this.result = [];
         for (let x = 0; x < this.cols+this.next + 1; x++) {
@@ -39,8 +53,8 @@ export class Tetris {
         //配列を初期化する
 
         this.init();
-        //初期のブロックをセット
-        this.render = new Render(this.result);
+        this.render.render(this.result);
+
 
     }
 
@@ -75,8 +89,6 @@ export class Tetris {
     public newGame() {
         clearInterval(this.interval);
         this.init();
-        //初期のブロックをセット
-        this.render = new Render(this.result);
         this.newBlock();
         this._lose = false;
         this.interval = setInterval(()=>this.tick(), 400);
@@ -93,7 +105,7 @@ export class Tetris {
                 this.block.point.y += offsetY;
                 this.block.point.x += offsetX;
                 this.block.angle = rotate;
-                this.render.render();
+                this.render.render(this.result);
                 this.tCon.pushBlock(this.block);
 
             } else {//何かあったとき
@@ -114,24 +126,24 @@ export class Tetris {
                         this.block.point.x += -2;
                         this.block.angle = 1;
                     }
-                    this.render.render();
+                    this.render.render(this.result);
                     this.tCon.pushBlock(this.block);
 
                 } else {
                     //下にまだおりれるか判定する
                     if (this.valid(0, 1)) {
-                        this.render.render();
+                        this.render.render(this.result);
                         this.tCon.pushBlock(this.block);
                         return;
                     }
                     //動けなくなった時の処理
                     if (this.valid()) {
-                        this.freeze();
-                        this.block.stop();
+                        this.freeze(this.block);
+                        this.block.stop = true;
                         this.clearLine();
                         this.tCon.pushBlock(this.block);
                         this.newBlock();
-                        this.render.render();
+                        this.render.render(this.result);
 
 
                     }
@@ -288,11 +300,11 @@ export class Tetris {
     /**
      * ブロックを固定させる
      */
-    public freeze() {
-        const blocks:Point[] = this.block.form[this.block.angle];
-        const point = {x: this.block.point.x, y: this.block.point.y};
+    public freeze(block : Block | ReceiveBlock) {
+        const blocks:Point[] = block.form[block.angle];
+        const point = {x: block.point.x, y: block.point.y};
 
-        const board = {type: 1, color: this.block.color};
+        const board = {type: 1, color: block.color};
         this.result[point.x][point.y] = board;
         for (let block of blocks) {
             if (this.result[block.x + point.x][block.y + point.y].type == -2) {
@@ -354,6 +366,21 @@ export class Tetris {
             return this._pause;
         }
 
+    }
+
+    /**
+     * 入れられたブロックを画面に表示する
+     * @param block {Block}
+     */
+    public rivalView(block : ReceiveBlock) {
+        this.render.setBlock(block);
+
+        if(block.stop){
+            this.freeze(block);
+            this.clearLine();
+        }
+
+        this.render.render(this.result);
     }
 
 

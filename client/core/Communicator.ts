@@ -2,6 +2,7 @@ import * as io from "socket.io-client";
 import {Block} from "../../model/Block";
 import {TetrisController} from "./TetrisController";
 import {BlockType} from "../../model/BlockType";
+import {ReceiveBlock} from "../../model/ReceiveBlock";
 
 /**
  * Created by vista on 2016/07/08.
@@ -46,7 +47,14 @@ export class Communicator{
            tc.ranking(rank);
         });
 
-        
+        this.socket.on('rivalBlock', function (rivalBlock : ReceiveBlock) {
+
+           tc.receiveBlock(rivalBlock);
+        });
+
+        this.socket.on('rivalScore', (score: number) => {
+           tc.rivalScore(score);
+        });
         
     }
 
@@ -68,7 +76,7 @@ export class Communicator{
      * ブロックを送信する
      * @param block {Block}
      */
-    public pushBlock(block:Block){
+    public pushBlock(block:ReceiveBlock){
         this.socket.emit('verification',block)
     }
 

@@ -28,36 +28,53 @@
         }
         #left {
             float: left;
+            height: 100%;
+            width: 15%;
         }
         #error{
             color:#ff0c17;
         }
         #right{
-            float:none;
+            float:right;
+            width: auto;
+        }
+
+        .canvas {
+            float : left;
+        }
+
+        .score {
+            font-size: 2em;
+            color : cornflowerblue;
         }
 
     </style>
+    <script src="app.js"></script>
 </head>
 <body>
-<div id="left">
-    <label form="name">Name:</label>
-    <input id="name" type="text" maxlength="10" placeholder="名前をいれてください"/>
-    <input id="refresh" type="button" value="準備"/>
-    <input id="start" type="button" value="スタート" disabled="true"/>
-    <br>
-    <label form="score">得点:</label>
-    <h2 id="score"></h2>
+    <form>
+        <label form="name">Name:</label>
+        <input id="name" type="text" maxlength="10" placeholder="名前をいれてください"/>
+        <input id="refresh" type="button" value="準備"/>
+        <input id="start" type="button" value="スタート" disabled="true"/>
+    </form>
+    <p id="error"></p>
 
+    <div id="left">
     <table id="table">
         <tr><th>rank</th><th>name</th><th>score</th></tr>
     </table>
-
-
-    <h1 id="error"></h1>
+    <h1 id="matchResult"></h1>
 </div>
 <div id="right" >
-    <canvas id="canvas" width="600" height="800"></canvas>
-    <script src="app.js"></script>
+    <canvas id="myCanvas" class="canvas" width="600" height="700"></canvas>
+    <canvas id="rivalCanvas" class="canvas rival" width="300" height="400" ></canvas>
+    <div id="scoreBlock">
+        <label form="score">自分の得点:</label>
+        <p id="score" class="score"></p>
+        <label form="rivalScore" class="rival">相手の得点:</label>
+        <p type="text" id="rivalScore" class="score" ></p>
+    </div>
 </div>
 </body>
 </html>

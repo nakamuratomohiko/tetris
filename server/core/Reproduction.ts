@@ -2,7 +2,7 @@ import {BlockType} from "../../model/BlockType";
 import {DBStore} from "../db/DBStore";
 import {BlockFactory} from "../../model/BlockFactory";
 import {Generator} from "./Generator";
-import {ReceiveBlock} from "../../model/RivalBlock";
+import {ReceiveBlock} from "../../model/ReceiveBlock";
 /**
  * Created by vista on 2016/07/05.
  */

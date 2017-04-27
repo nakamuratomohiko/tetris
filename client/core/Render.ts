@@ -1,5 +1,6 @@
 import {Board} from "../../model/Board";
 import {Block} from "../../model/Block";
+import {ReceiveBlock} from "../../model/ReceiveBlock";
 /**
  * Created by vista on 2016/07/06.
  */
@@ -7,32 +8,30 @@ import {Block} from "../../model/Block";
 
 export class Render{
     //壁はblack,whiteはカラ,配列はnumberではなく色配列とする
-    private canvas = document.getElementsByTagName('canvas')[0];
-    private ctx = this.canvas.getContext('2d');
-    private size = 35;
+    private ctx;
+    private size;
     private cols:number = 10;//横分割個数
     private rows:number = 20;//縦分割個数
-    private result:Board[][];
-    private block:Block;//操作しているBlock
+    private block:Block | ReceiveBlock;//操作しているBlock
     private next:number = 4;//nextBlockを表示する横領域
 
-    constructor(result:Board[][]){
-        this.result = result;
-        this.render();
+    constructor(canvas : HTMLCanvasElement, size : number ){
+        this.ctx = canvas.getContext('2d');
+        this.size = size;
     }
 
     /**
      * Blockをセットする
      * @param block
      */
-    public setBlock(block):void{
+    public setBlock(block : Block | ReceiveBlock):void{
         this.block = block;
     }
     
     /**
      * キャンバスに書き込む
      */
-    public render(){
+    public render(result : Board[][]){
         //キャンバスをリセット
         this.ctx.clearRect(0,0,this.size*this.cols,this.size * this.rows);
         this.ctx.strokeStyle = 'black';
@@ -42,7 +41,7 @@ export class Render{
 
                 // if(this.result[x][y].type != 0){
 
-                    this.ctx.fillStyle = this.result[x][y].color;
+                    this.ctx.fillStyle = result[x][y].color;
                     this.drawBlock(x,y);
 
                 // }

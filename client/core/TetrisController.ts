@@ -2,6 +2,7 @@ import {Communicator} from "./Communicator";
 import {Tetris} from "./Tetris";
 import {BlockType} from "../../model/BlockType";
 import {Block} from "../../model/Block";
+import {ReceiveBlock} from "../../model/ReceiveBlock";
 /**
  * Created by vista on 2016/07/07.
  */
@@ -9,11 +10,11 @@ import {Block} from "../../model/Block";
 export class TetrisController{
 
     private commu:Communicator;
-    private tetris:Tetris;
+    private myTetris:Tetris;
+    private rivalTetris: Tetris;
 
     constructor(){
         this.commu = new Communicator(this);
-        this.tetris = new Tetris(this);
         document.body.onkeydown = (e)=>this.onKeyDown(e);
         this.ready();
         document.getElementById("refresh").onclick = ()=> this.ready();
@@ -28,6 +29,10 @@ export class TetrisController{
      * ClientのTetrisのセット
      */
     public ready(){
+
+        if( this.myTetris) this.myTetris.invalidOperation();
+        if( this.rivalTetris ) this.rivalTetris.invalidOperation();
+
         //初期化する
         const s = <HTMLInputElement>document.getElementById("score");
         s.innerHTML = "";
@@ -38,6 +43,9 @@ export class TetrisController{
         a.disabled = true;
         if(name.value  != ""){
             e.innerHTML = "";
+            this.myTetris = new Tetris(this);
+            this.rivalTetris = new Tetris();
+
             this.commu.ready();
         }else{
             e.innerHTML = "名前は先にいれてください";
@@ -51,7 +59,7 @@ export class TetrisController{
      * @param blockList
      */
     public setBlockList(blockList:BlockType[]){
-        this.tetris.setBlockList(blockList);
+        this.myTetris.setBlockList(blockList);
         const a = <HTMLInputElement>document.getElementById("start");
         a.disabled = false;
     }
@@ -63,7 +71,7 @@ export class TetrisController{
     public start(){
         const a = <HTMLInputElement>document.getElementById("start");
         a.disabled = true;
-        this.tetris.newGame();
+        this.myTetris.newGame();
     }
 
       /**
@@ -75,14 +83,27 @@ export class TetrisController{
         p.innerHTML = score+"POINT";
     }
 
+    public rivalScore(score: number) {
+        const rivalScore = document.getElementById('rivalScore');
+        rivalScore.innerText = score+"POINT";
+    }
+
     /**
      * サーバにブロックを送る
      * @param block
      */
     public pushBlock(block:Block){
         //serverにブロックを送る
-        this.commu.pushBlock(block);
+        this.commu.pushBlock(block.toReceiveBlock());
         
+    }
+
+    /**
+     * サーバから受け取った対戦相手のブロック情報
+     * @param block {Block}
+     */
+    public receiveBlock (rivalBlock : ReceiveBlock ) {
+        this.rivalTetris.rivalView(rivalBlock);
     }
 
     /**
@@ -92,7 +113,7 @@ export class TetrisController{
     public Error(msg:string){
         let p = document.getElementById("error");
         p.innerHTML = msg;
-        this.tetris.invalidOperation();
+        this.myTetris.invalidOperation();
     }
     
     
@@ -142,7 +163,7 @@ export class TetrisController{
     public pause(){
         const p = document.getElementById("error");
         const name = <HTMLInputElement>document.getElementById("name");
-        if(this.tetris.pause()) {
+        if(this.myTetris.pause()) {
             p.innerHTML = "pause";
         }else{
             if(name.value == ""){
@@ -172,7 +193,7 @@ export class TetrisController{
         };
 
         if(typeof keys[e.keyCode] != 'undefined'){
-            if(!this.tetris.lose) {
+            if(!this.myTetris.lose) {
                 e.preventDefault();
                 this.keyDown(keys[e.keyCode]);
             }
@@ -191,17 +212,17 @@ export class TetrisController{
         switch (key){
 
             case 'left':
-                this.tetris.tick(-1,0,0);
+                this.myTetris.tick(-1,0,0);
                 break;
 
             case 'rotate':
-                this.tetris.tick(0,0,1);
+                this.myTetris.tick(0,0,1);
                 break;
             case 'right':
-                this.tetris.tick(1,0,0);
+                this.myTetris.tick(1,0,0);
                 break;
             case 'down':
-                this.tetris.tick(0,1);
+                this.myTetris.tick(0,1);
                 break;
             case 'space':
                 this.pause();
