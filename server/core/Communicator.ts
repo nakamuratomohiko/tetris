@@ -87,8 +87,14 @@ export class Communicator {
             client.on('verification', function (block:ReceiveBlock) {
                 tServer.verid(client.id,block,)
                     .then((map) =>{
-                        io.sockets.to(client.id).emit('notifyScore',map.get('score'));
-                        if(map.get('opponentId')) io.sockets.to(map.get('opponentId')).emit('rivalBlock', block);
+                        const score = map.get('score');
+
+                        io.sockets.to(client.id).emit('notifyScore',score);
+                        if(map.get('opponentId')) {
+                            const opponentId = map.get('opponentId');
+                            io.sockets.to(opponentId).emit('rivalBlock', block);
+                            io.sockets.to(opponentId).emit('rivalScore', score);
+                        }
                     })
                     .catch((msg:string)=>{
                        io.sockets.to(client.id).emit('Error',msg);
