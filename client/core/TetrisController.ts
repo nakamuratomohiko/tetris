@@ -89,7 +89,7 @@ export class TetrisController{
      */
     public pushBlock(block:Block){
         //serverにブロックを送る
-        this.commu.pushBlock(block);
+        this.commu.pushBlock(block.toReceiveBlock());
         
     }
 
