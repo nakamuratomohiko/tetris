@@ -52,7 +52,9 @@ export class Communicator{
            tc.receiveBlock(rivalBlock);
         });
 
-        
+        this.socket.on('rivalScore', (score: number) => {
+           tc.rivalScore(score);
+        });
         
     }
 
