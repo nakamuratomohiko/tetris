@@ -5,7 +5,7 @@ export interface ReceiveBlock {
     point : Point,
     angle : number,
     blockType : BlockType
-    from : Point[][],
+    form : Point[][],
     color : string,
     date : Date,
     stop : boolean
