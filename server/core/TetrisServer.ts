@@ -4,6 +4,7 @@ import {Communicator} from "./Communicator";
 import {BlockType} from "../../model/BlockType";
 import * as sms from "source-map-support";
 import {ReceiveBlock} from "../../model/ReceiveBlock";
+import {BattleManagement} from "../BattleManagement";
 /**
  * Created by vista on 2016/07/12.
  */
@@ -14,10 +15,12 @@ export class TetrisServer{
 
     private reproList:{};
     private Comm:Communicator;
-    
+    private battleManage : BattleManagement;
+
     constructor(){
        this.Comm = new Communicator(this);
         this.reproList = {};
+        this.battleManage = new BattleManagement();
     }
 
     /**
@@ -44,7 +47,8 @@ export class TetrisServer{
      */
     public disconnect(id:string){
         if(this.reproList[id] != undefined){
-          delete  this.reproList[id];
+            this.battleManage.unregister(id);
+            delete  this.reproList[id];
 
         }
     }
@@ -62,6 +66,8 @@ export class TetrisServer{
             if(list === undefined){
                 reject("ブロックの読み込みに失敗しました。もう一度準備をおしてください");
             }
+            this.battleManage.unregister(id);
+            this.battleManage.challenge(id);
             resolve(list);
 
         });
@@ -73,19 +79,22 @@ export class TetrisServer{
      * @param block {Block}
      * @returns {Promise<number>}
      */
-    public verid(id:string,block:ReceiveBlock):Promise<number>{
-        return new Promise<number>((resolve,reject) =>{
+    public verid(id:string,block:ReceiveBlock):Promise<Map<string, any>>{
+        return new Promise<Map<string,any>>((resolve,reject) =>{
             const re = this.reproList[id];
             if(re === undefined){
                 reject("ページをリロードしてください");
             }else{
                 if(re.pushBlock(block)){
-                    resolve(re.score);
+                    const map = new Map();
+                    map.set('score',re.score);
+                    map.set('opponentId',this.battleManage.getOpponent(id));
+                    resolve( map );
                 }else{
+                    this.battleManage.unregister(id);
                     reject("不正がみうけられました");
                 }
             }
-
 
         });
     }
@@ -99,6 +108,7 @@ export class TetrisServer{
         return new Promise<Object[]>((resolve,reject) =>{
             const re = this.reproList[id];
             if(re == undefined){
+                this.battleManage.unregister(id);
                 reject("プレイデータが消えました。ページをリロードしてください");
             }else{
                 re.finish(name)
@@ -106,9 +116,12 @@ export class TetrisServer{
                         resolve(list);
                     })
                     .catch((err) =>{
+                        this.battleManage.unregister(id);
                         reject(err);
                     });
             }
         });
     }
+
+
 }

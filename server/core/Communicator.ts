@@ -85,10 +85,10 @@ export class Communicator {
              * ブロックの検証受け付ける
              */
             client.on('verification', function (block:ReceiveBlock) {
-                tServer.verid(client.id,block)
-                    .then((score)=>{
-                        io.sockets.to(client.id).emit('notifyScore',score);
-                        io.sockets.to(client.id).emit('rivalBlock', block);
+                tServer.verid(client.id,block,)
+                    .then((map) =>{
+                        io.sockets.to(client.id).emit('notifyScore',map.get('score'));
+                        if(map.get('opponentId')) io.sockets.to(map.get('opponentId')).emit('rivalBlock', block);
                     })
                     .catch((msg:string)=>{
                        io.sockets.to(client.id).emit('Error',msg);
