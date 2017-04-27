@@ -110,14 +110,14 @@ export abstract class Block{
     /**
      * 状態をストップにする
      */
-    public stop() {
-        this._stop = true;
+    public set stop(stop : boolean) {
+        this._stop = stop;
     }
 
     /**
      * 状態を取得
      * @returns {boolean}
      */
-    public get move():boolean {return this._stop;}
+    public get stop():boolean {return this._stop;}
 
 }
