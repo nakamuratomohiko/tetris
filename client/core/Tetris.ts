@@ -5,6 +5,7 @@ import {Block} from "../../model/Block";
 import {Point} from "../../model/Point";
 import {TetrisController} from "./TetrisController";
 import {Render} from "./Render";
+import {ReceiveBlock} from "../../model/ReceiveBlock";
 
 /**
  * Created by vista on 2016/07/07.
@@ -299,7 +300,7 @@ export class Tetris {
     /**
      * ブロックを固定させる
      */
-    public freeze(block : Block) {
+    public freeze(block : Block | ReceiveBlock) {
         const blocks:Point[] = block.form[block.angle];
         const point = {x: block.point.x, y: block.point.y};
 
@@ -371,7 +372,7 @@ export class Tetris {
      * 入れられたブロックを画面に表示する
      * @param block {Block}
      */
-    public rivalView(block : Block) {
+    public rivalView(block : ReceiveBlock) {
         this.render.setBlock(block);
 
         if(block.stop){
