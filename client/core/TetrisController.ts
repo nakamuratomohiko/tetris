@@ -2,6 +2,7 @@ import {Communicator} from "./Communicator";
 import {Tetris} from "./Tetris";
 import {BlockType} from "../../model/BlockType";
 import {Block} from "../../model/Block";
+import {ReceiveBlock} from "../../model/ReceiveBlock";
 /**
  * Created by vista on 2016/07/07.
  */
@@ -96,8 +97,8 @@ export class TetrisController{
      * サーバから受け取った対戦相手のブロック情報
      * @param block {Block}
      */
-    public receiveBlock (block : Block ) {
-        this.rivalTetris.rivalView(block);
+    public receiveBlock (rivalBlock : ReceiveBlock ) {
+        this.rivalTetris.rivalView(rivalBlock);
     }
 
     /**
