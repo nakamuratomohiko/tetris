@@ -52,6 +52,8 @@ export class Tetris {
         //配列を初期化する
 
         this.init();
+        this.render.render(this.result);
+
 
     }
 
