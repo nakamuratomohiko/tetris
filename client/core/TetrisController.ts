@@ -10,6 +10,7 @@ export class TetrisController{
 
     private commu:Communicator;
     private myTetris:Tetris;
+    private rivalTetris: Tetris;
 
     constructor(){
         this.commu = new Communicator(this);
@@ -27,6 +28,10 @@ export class TetrisController{
      * ClientのTetrisのセット
      */
     public ready(){
+
+        if( this.myTetris) this.myTetris.invalidOperation();
+        if( this.rivalTetris ) this.rivalTetris.invalidOperation();
+
         //初期化する
         const s = <HTMLInputElement>document.getElementById("score");
         s.innerHTML = "";
@@ -37,6 +42,9 @@ export class TetrisController{
         a.disabled = true;
         if(name.value  != ""){
             e.innerHTML = "";
+            this.myTetris = new Tetris(this);
+            this.rivalTetris = new Tetris();
+
             this.commu.ready();
         }else{
             e.innerHTML = "名前は先にいれてください";
@@ -80,6 +88,7 @@ export class TetrisController{
      */
     public pushBlock(block:Block){
         //serverにブロックを送る
+        this.rivalTetris.rivalView(JSON.parse(JSON.stringify(block)));
         this.commu.pushBlock(block);
         
     }
