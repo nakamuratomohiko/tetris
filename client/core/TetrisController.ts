@@ -83,6 +83,11 @@ export class TetrisController{
         p.innerHTML = score+"POINT";
     }
 
+    public rivalScore(score: number) {
+        const rivalScore = document.getElementById('rivalScore');
+        rivalScore.innerText = score+"POINT";
+    }
+
     /**
      * サーバにブロックを送る
      * @param block
