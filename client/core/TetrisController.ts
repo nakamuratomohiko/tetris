@@ -88,9 +88,16 @@ export class TetrisController{
      */
     public pushBlock(block:Block){
         //serverにブロックを送る
-        this.rivalTetris.rivalView(JSON.parse(JSON.stringify(block)));
         this.commu.pushBlock(block);
         
+    }
+
+    /**
+     * サーバから受け取った対戦相手のブロック情報
+     * @param block {Block}
+     */
+    public receiveBlock (block : Block ) {
+        this.rivalTetris.rivalView(block);
     }
 
     /**
