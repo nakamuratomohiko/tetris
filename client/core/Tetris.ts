@@ -41,7 +41,7 @@ export class Tetris {
         //自分以外テトリス
         } else {
             canvas = document.getElementById('rivalCanvas') as HTMLCanvasElement;
-            this.render = new Render(canvas,12);
+            this.render = new Render(canvas,20);
         }
 
         this._pause = false;
