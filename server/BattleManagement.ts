@@ -95,4 +95,12 @@ export class BattleManagement {
         this.playerName.delete(id);
     }
 
+    /**
+     * スタートしたので受付をキャンセル
+     * @param id
+     */
+    public cancellation (id : string) {
+        this.matchAcceptance.set(id, false)
+    }
+
 }

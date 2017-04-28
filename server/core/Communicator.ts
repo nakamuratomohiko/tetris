@@ -121,6 +121,13 @@ export class Communicator {
                 
             });
 
+            /**
+             * ゲームをスタートした事をTetrisServerに伝える
+             */
+            client.on('clientStart', () => {
+                tServer.start(client.id);
+            });
+
 
         });
         server.listen(8080);

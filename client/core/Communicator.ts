@@ -85,6 +85,13 @@ export class Communicator{
         this.socket.emit('verification',block)
     }
 
+    /**
+     * サーバにスタートしたことを通知する
+     */
+    public start() {
+        this.socket.emit('clientStart');
+    }
+
    
     
 }

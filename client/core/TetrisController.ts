@@ -73,6 +73,7 @@ export class TetrisController{
     public start(){
         const a = <HTMLInputElement>document.getElementById("start");
         a.disabled = true;
+        this.commu.start();
         this.myTetris.newGame();
     }
 
