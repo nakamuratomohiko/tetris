@@ -14,9 +14,15 @@ export class BattleManagement {
      */
     private matchAcceptance : Map <string, boolean>;
 
+    /**
+     * プレイヤーの名前を保存する
+     */
+    private playerName : Map<string, string>;
+
     constructor(){
         this.opponents  = new Map<string,string>();
         this.matchAcceptance = new Map<string, boolean>();
+        this.playerName = new Map<string, string>();
     }
 
     /**
@@ -61,12 +67,32 @@ export class BattleManagement {
     }
 
     /**
+     * IDから対戦相手の名前を取得する
+     * @param id
+     * @returns {undefined|string}
+     */
+    public getPlayerName (id : string) : string {
+        return this.playerName.get(id);
+    }
+
+    /**
+     * IDと名前を関連づける
+     * @param id
+     * @param name
+     */
+    public setPlayerName (id : string, name : string) {
+        if(name.length > 10) name.slice(0,10);
+        this.playerName.set(id,name);
+    }
+
+    /**
      * 指定したIDをキーとするキーとバリューを削除
      * @param id
      */
     public unregister (id : string) {
         this.matchAcceptance.delete(id);
         this.opponents.delete(id);
+        this.playerName.delete(id);
     }
 
 }
