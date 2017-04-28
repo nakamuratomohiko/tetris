@@ -125,7 +125,7 @@ export class Communicator {
              * ゲームをスタートした事をTetrisServerに伝える
              */
             client.on('clientStart', () => {
-                this.tServer.start(client.id);
+                tServer.start(client.id);
             });
 
 
