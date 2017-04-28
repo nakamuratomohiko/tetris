@@ -45,12 +45,14 @@ export class TetrisController{
             e.innerHTML = "";
             this.myTetris = new Tetris(this);
             this.rivalTetris = new Tetris();
-
-            this.commu.ready();
+            this.commu.ready(name.value);
         }else{
             e.innerHTML = "名前は先にいれてください";
 
         }
+
+        document.getElementById('rivalName').innerText = "相手の得点 :"
+
 
     }
 
@@ -104,6 +106,14 @@ export class TetrisController{
      */
     public receiveBlock (rivalBlock : ReceiveBlock ) {
         this.rivalTetris.rivalView(rivalBlock);
+    }
+
+    /**
+     * 相手の名前をセットする
+     * @param name
+     */
+    public rivalName( name : string ) {
+        document.getElementById('rivalName').innerText = name + "の得点 :";
     }
 
     /**

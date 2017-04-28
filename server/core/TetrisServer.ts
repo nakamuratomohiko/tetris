@@ -57,8 +57,8 @@ export class TetrisServer{
      * BlockTypeの配列を返す
      * @returns {Promise}
      */
-    public ready(id:string):Promise<BlockType[]>{
-        return new Promise<BlockType[]>((resolve,reject) =>{
+    public ready(id:string, name : string):Promise<Map<string, any>>{
+        return new Promise<Map<string,any>> ((resolve,reject) =>{
             if(this.reproList[id] === undefined){
                 reject("ページを読み込み直してください");
             }
@@ -68,7 +68,14 @@ export class TetrisServer{
             }
             this.battleManage.unregister(id);
             this.battleManage.challenge(id);
-            resolve(list);
+            this.battleManage.setPlayerName(id,name);
+            const opponentId = this.battleManage.getOpponent(id);
+            const map = new Map<string, any>();
+            if (opponentId)  map.set('opponentName', this.battleManage.getPlayerName(opponentId));
+            map.set('list', list);
+            map.set('opponentId', opponentId);
+            map.set('myName', this.battleManage.getPlayerName(id));
+            resolve(map);
 
         });
     }

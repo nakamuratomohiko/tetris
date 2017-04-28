@@ -68,11 +68,15 @@ export class Communicator {
             /**
              * 準備をする、配列を返す通信
              */
-            client.on('ready', function () {
+            client.on('ready', function (name : string) {
                 
-                tServer.ready(client.id)
-                    .then(list => {
-                        io.sockets.to(client.id).emit('ready', list);
+                tServer.ready(client.id, name)
+                    .then(map => {
+                        io.sockets.to(client.id).emit('ready', map.get('list'));
+                        if (map.get('opponentId')) {
+                            io.sockets.to(map.get('opponentId')).emit('rivalName', map.get('myName'));
+                            io.sockets.to(client.id).emit(('rivalName'), map.get('opponentName'));
+                        }
                     })
                     .catch(err =>{
                         io.sockets.to(client.id).emit('Error',err);
@@ -110,6 +114,7 @@ export class Communicator {
                         io.sockets.to(client.id).emit('ranking', list);
                     })
                     .catch(err =>{
+                        console.log(err);
                         io.sockets.to(client.id).emit('Error', err);
 
                     });

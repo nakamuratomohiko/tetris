@@ -55,14 +55,19 @@ export class Communicator{
         this.socket.on('rivalScore', (score: number) => {
            tc.rivalScore(score);
         });
+
+        this.socket.on('rivalName', (name : string) => {
+            tc.rivalName(name);
+        });
+
         
     }
 
     /**
      * 準備を
      */
-    public ready(){
-        this.socket.emit('ready');
+    public ready(name: string){
+        this.socket.emit('ready', name);
     }
 
     /**
