@@ -130,5 +130,16 @@ export class TetrisServer{
         });
     }
 
+    /**
+     * 受付をキャンセルする
+     * @param id
+     */
+    public start(id : string) {
+
+        this.battleManage.cancellation(id);
+
+    }
+
+
 
 }
