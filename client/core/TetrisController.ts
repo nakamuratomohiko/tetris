@@ -51,6 +51,9 @@ export class TetrisController{
 
         }
 
+        document.getElementById('rivalName').innerText = "相手の得点 :"
+
+
     }
 
     /**
@@ -103,6 +106,14 @@ export class TetrisController{
      */
     public receiveBlock (rivalBlock : ReceiveBlock ) {
         this.rivalTetris.rivalView(rivalBlock);
+    }
+
+    /**
+     * 相手の名前をセットする
+     * @param name
+     */
+    public rivalName( name : string ) {
+        document.getElementById('rivalName').innerText = name + "の得点 :";
     }
 
     /**
