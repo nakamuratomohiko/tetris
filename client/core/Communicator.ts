@@ -55,6 +55,11 @@ export class Communicator{
         this.socket.on('rivalScore', (score: number) => {
            tc.rivalScore(score);
         });
+
+        this.socket.on('rivalName', (name : string) => {
+            tc.rivalName(name);
+        });
+
         
     }
 
