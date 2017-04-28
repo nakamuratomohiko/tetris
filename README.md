@@ -9,7 +9,7 @@ moduleは、リアルタイム通信にsoket.ioを使用。
         Node.jsを使用することにより、サーバサイドをJavaScriptで組むことにより、フルスタック.Webアプリになっています。
 
 #Demo
-http://imyme.xyz:8080
+http://kbckj.net:8080
 操作方法は十字キー
 上:回転
 右:右移動
