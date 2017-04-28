@@ -90,6 +90,8 @@ export class BattleManagement {
      * @param id
      */
     public unregister (id : string) {
+        const opponentId = this.opponents.get(id);
+        this.opponents.delete(opponentId);
         this.matchAcceptance.delete(id);
         this.opponents.delete(id);
         this.playerName.delete(id);
