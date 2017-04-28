@@ -61,8 +61,8 @@ export class Communicator{
     /**
      * 準備を
      */
-    public ready(){
-        this.socket.emit('ready');
+    public ready(name: string){
+        this.socket.emit('ready', name);
     }
 
     /**

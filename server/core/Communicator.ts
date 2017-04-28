@@ -68,7 +68,7 @@ export class Communicator {
             /**
              * 準備をする、配列を返す通信
              */
-            client.on('ready', function () {
+            client.on('ready', function (name : string) {
                 
                 tServer.ready(client.id)
                     .then(list => {
